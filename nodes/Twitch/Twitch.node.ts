@@ -170,6 +170,36 @@ export class Twitch implements INodeType {
                         action: 'Get users follows',
                     },
                     {
+                        name: 'Get User Block List',
+                        value: 'getUserBlockList',
+                        action: 'Get user block list',
+                    },
+                    {
+                        name: 'Block User',
+                        value: 'blockUser',
+                        action: 'Block user',
+                    },
+                    {
+                        name: 'Unblock User',
+                        value: 'unblockUser',
+                        action: 'Unblock user',
+                    },
+                    {
+                        name: 'Get User Extensions',
+                        value: 'getUserExtensions',
+                        action: 'Get user extensions',
+                    },
+                    {
+                        name: 'Get User Active Extensions',
+                        value: 'getUserActiveExtensions',
+                        action: 'Get user active extensions',
+                    },
+                    {
+                        name: 'Update User Extensions',
+                        value: 'updateUserExtensions',
+                        action: 'Update user extensions',
+                    },
+                    {
                         name: 'Search Categories',
                         value: 'searchCategories',
                         action: 'Search categories',
@@ -1186,6 +1216,157 @@ export class Twitch implements INodeType {
                 },
             },
             {
+                displayName: 'First',
+                name: 'first_blocks',
+                type: 'number',
+                typeOptions: { minValue: 1, maxValue: 100 },
+                required: false,
+                default: 20,
+                description: 'The maximum number of items to return per page',
+                displayOptions: {
+                    show: {
+                        operation: ['getUserBlockList'],
+                    },
+                },
+            },
+            {
+                displayName: 'After',
+                name: 'after_blocks',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The cursor used to get the next page of results',
+                displayOptions: {
+                    show: {
+                        operation: ['getUserBlockList'],
+                    },
+                },
+            },
+            {
+                displayName: 'Target User ID',
+                name: 'target_user_id',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'User ID of the user to block',
+                displayOptions: {
+                    show: {
+                        operation: ['blockUser'],
+                    },
+                },
+            },
+            {
+                displayName: 'Source Context',
+                name: 'source_context',
+                type: 'options',
+                options: [
+                    {
+                        name: 'Chat',
+                        value: 'chat',
+                    },
+                    {
+                        name: 'Whisper',
+                        value: 'whisper',
+                    },
+                ],
+                required: false,
+                default: 'chat',
+                description: 'Source context for blocking the user',
+                displayOptions: {
+                    show: {
+                        operation: ['blockUser'],
+                    },
+                },
+            },
+            {
+                displayName: 'Reason',
+                name: 'reason',
+                type: 'options',
+                options: [
+                    {
+                        name: 'Harassment',
+                        value: 'harassment',
+                    },
+                    {
+                        name: 'Spam',
+                        value: 'spam',
+                    },
+                    {
+                        name: 'Other',
+                        value: 'other',
+                    },
+                ],
+                required: false,
+                default: 'other',
+                description: 'Reason for blocking the user',
+                displayOptions: {
+                    show: {
+                        operation: ['blockUser'],
+                    },
+                },
+            },
+            {
+                displayName: 'Target User ID',
+                name: 'target_user_id_unblock',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'User ID of the user to unblock',
+                displayOptions: {
+                    show: {
+                        operation: ['unblockUser'],
+                    },
+                },
+            },
+            {
+                displayName: 'Extension Type',
+                name: 'extension_type',
+                type: 'options',
+                options: [
+                    {
+                        name: 'All',
+                        value: '',
+                    },
+                    {
+                        name: 'Component',
+                        value: 'component',
+                    },
+                    {
+                        name: 'Mobile',
+                        value: 'mobile',
+                    },
+                    {
+                        name: 'Panel',
+                        value: 'panel',
+                    },
+                    {
+                        name: 'Overlay',
+                        value: 'overlay',
+                    },
+                ],
+                required: false,
+                default: '',
+                description: 'Type of extension to retrieve',
+                displayOptions: {
+                    show: {
+                        operation: ['getUserExtensions'],
+                    },
+                },
+            },
+            {
+                displayName: 'Extension Configuration',
+                name: 'extension_config',
+                type: 'json',
+                required: true,
+                default: '{}',
+                description: 'Extension configuration data (JSON format)',
+                displayOptions: {
+                    show: {
+                        operation: ['updateUserExtensions'],
+                    },
+                },
+            },
+            {
                 displayName: 'Channel Name',
                 name: 'channel_name',
                 type: 'string',
@@ -2048,6 +2229,121 @@ export class Twitch implements INodeType {
                     'PUT',
                     '/users',
                     body,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getUserBlockList') {
+                const first = this.getNodeParameter('first_blocks', i) as number;
+                const after = this.getNodeParameter('after_blocks', i) as string;
+
+                const query: IDataObject = {};
+                if (first) query.first = first;
+                if (after) query.after = after;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/users/blocks',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'blockUser') {
+                const targetUserId = this.getNodeParameter('target_user_id', i) as string;
+                const sourceContext = this.getNodeParameter('source_context', i) as string;
+                const reason = this.getNodeParameter('reason', i) as string;
+
+                const query: IDataObject = {
+                    target_user_id: targetUserId,
+                };
+                if (sourceContext) query.source_context = sourceContext;
+                if (reason) query.reason = reason;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'PUT',
+                    '/users/blocks',
+                    {},
+                    query,
+                );
+
+                if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'unblockUser') {
+                const targetUserId = this.getNodeParameter('target_user_id_unblock', i) as string;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'DELETE',
+                    '/users/blocks',
+                    {},
+                    { target_user_id: targetUserId },
+                );
+
+                if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'getUserExtensions') {
+                const extensionType = this.getNodeParameter('extension_type', i) as string;
+
+                const query: IDataObject = {};
+                if (extensionType) query.extension_type = extensionType;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/users/extensions',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getUserActiveExtensions') {
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/users/extensions',
+                    {},
+                );
+
+                if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'updateUserExtensions') {
+                const extensionConfig = this.getNodeParameter('extension_config', i) as string;
+
+                let configData: IDataObject;
+                try {
+                    configData = JSON.parse(extensionConfig);
+                } catch (error) {
+                    throw new Error('Invalid JSON in extension configuration');
+                }
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'PUT',
+                    '/users/extensions',
+                    configData,
                 );
 
                 if (Array.isArray(response.data)) {
