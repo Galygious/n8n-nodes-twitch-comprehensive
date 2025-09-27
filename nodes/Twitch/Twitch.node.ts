@@ -61,9 +61,34 @@ export class Twitch implements INodeType {
                         action: 'Get extension transactions',
                     },
                     {
-                        name: 'Users - Block User',
-                        value: 'blockUser',
-                        action: 'Block user',
+                        name: 'Channel Points - Create Custom Rewards',
+                        value: 'createCustomRewards',
+                        action: 'Create custom rewards',
+                    },
+                    {
+                        name: 'Channel Points - Delete Custom Reward',
+                        value: 'deleteCustomReward',
+                        action: 'Delete custom reward',
+                    },
+                    {
+                        name: 'Channel Points - Get Custom Reward',
+                        value: 'getCustomReward',
+                        action: 'Get custom reward',
+                    },
+                    {
+                        name: 'Channel Points - Get Custom Reward Redemption',
+                        value: 'getCustomRewardRedemption',
+                        action: 'Get custom reward redemption',
+                    },
+                    {
+                        name: 'Channel Points - Update Custom Reward',
+                        value: 'updateCustomReward',
+                        action: 'Update custom reward',
+                    },
+                    {
+                        name: 'Channel Points - Update Redemption Status',
+                        value: 'updateRedemptionStatus',
+                        action: 'Update redemption status',
                     },
                     {
                         name: 'Chat - Get Channel Chat Badges',
@@ -146,29 +171,89 @@ export class Twitch implements INodeType {
                         action: 'Search categories',
                     },
                     {
-                        name: 'Users - Get User Active Extensions',
-                        value: 'getUserActiveExtensions',
-                        action: 'Get user active extensions',
+                        name: 'Moderation - Add Blocked Term',
+                        value: 'addBlockedTerm',
+                        action: 'Add blocked term',
                     },
                     {
-                        name: 'Users - Get User Block List',
-                        value: 'getUserBlockList',
-                        action: 'Get user block list',
+                        name: 'Moderation - Add Channel Moderator',
+                        value: 'addChannelModerator',
+                        action: 'Add channel moderator',
                     },
                     {
-                        name: 'Users - Get User Extensions',
-                        value: 'getUserExtensions',
-                        action: 'Get user extensions',
+                        name: 'Moderation - Ban User',
+                        value: 'banUser',
+                        action: 'Ban user',
                     },
                     {
-                        name: 'Users - Get Users',
-                        value: 'getUsers',
-                        action: 'Get users',
+                        name: 'Moderation - Get AutoMod Settings',
+                        value: 'getAutoModSettings',
+                        action: 'Get automod settings',
                     },
                     {
-                        name: 'Users - Get Users Follows',
-                        value: 'getUsersFollows',
-                        action: 'Get users follows',
+                        name: 'Moderation - Get Banned Users',
+                        value: 'getBannedUsers',
+                        action: 'Get banned users',
+                    },
+                    {
+                        name: 'Moderation - Get Blocked Terms',
+                        value: 'getBlockedTerms',
+                        action: 'Get blocked terms',
+                    },
+                    {
+                        name: 'Moderation - Get Moderators',
+                        value: 'getModerators',
+                        action: 'Get moderators',
+                    },
+                    {
+                        name: 'Moderation - Remove Blocked Term',
+                        value: 'removeBlockedTerm',
+                        action: 'Remove blocked term',
+                    },
+                    {
+                        name: 'Moderation - Remove Channel Moderator',
+                        value: 'removeChannelModerator',
+                        action: 'Remove channel moderator',
+                    },
+                    {
+                        name: 'Moderation - Unban User',
+                        value: 'unbanUser',
+                        action: 'Unban user',
+                    },
+                    {
+                        name: 'Moderation - Update AutoMod Settings',
+                        value: 'updateAutoModSettings',
+                        action: 'Update automod settings',
+                    },
+                    {
+                        name: 'Polls - Create Poll',
+                        value: 'createPoll',
+                        action: 'Create poll',
+                    },
+                    {
+                        name: 'Polls - End Poll',
+                        value: 'endPoll',
+                        action: 'End poll',
+                    },
+                    {
+                        name: 'Polls - Get Polls',
+                        value: 'getPolls',
+                        action: 'Get polls',
+                    },
+                    {
+                        name: 'Predictions - Create Prediction',
+                        value: 'createPrediction',
+                        action: 'Create prediction',
+                    },
+                    {
+                        name: 'Predictions - End Prediction',
+                        value: 'endPrediction',
+                        action: 'End prediction',
+                    },
+                    {
+                        name: 'Predictions - Get Predictions',
+                        value: 'getPredictions',
+                        action: 'Get predictions',
                     },
                     {
                         name: 'Schedule - Create Channel Stream Schedule Segment',
@@ -226,6 +311,56 @@ export class Twitch implements INodeType {
                         action: 'Search channels',
                     },
                     {
+                        name: 'Subscriptions - Check User Subscription',
+                        value: 'checkUserSubscription',
+                        action: 'Check user subscription',
+                    },
+                    {
+                        name: 'Subscriptions - Get Broadcaster Subscriptions',
+                        value: 'getBroadcasterSubscriptions',
+                        action: 'Get broadcaster subscriptions',
+                    },
+                    {
+                        name: 'Teams - Get Channel Teams',
+                        value: 'getChannelTeams',
+                        action: 'Get channel teams',
+                    },
+                    {
+                        name: 'Teams - Get Teams',
+                        value: 'getTeams',
+                        action: 'Get teams',
+                    },
+                    {
+                        name: 'Users - Block User',
+                        value: 'blockUser',
+                        action: 'Block user',
+                    },
+                    {
+                        name: 'Users - Get User Active Extensions',
+                        value: 'getUserActiveExtensions',
+                        action: 'Get user active extensions',
+                    },
+                    {
+                        name: 'Users - Get User Block List',
+                        value: 'getUserBlockList',
+                        action: 'Get user block list',
+                    },
+                    {
+                        name: 'Users - Get User Extensions',
+                        value: 'getUserExtensions',
+                        action: 'Get user extensions',
+                    },
+                    {
+                        name: 'Users - Get Users',
+                        value: 'getUsers',
+                        action: 'Get users',
+                    },
+                    {
+                        name: 'Users - Get Users Follows',
+                        value: 'getUsersFollows',
+                        action: 'Get users follows',
+                    },
+                    {
                         name: 'Users - Unblock User',
                         value: 'unblockUser',
                         action: 'Unblock user',
@@ -241,59 +376,9 @@ export class Twitch implements INodeType {
                         action: 'Update user extensions',
                     },
                     {
-                        name: 'Moderation - Get Banned Users',
-                        value: 'getBannedUsers',
-                        action: 'Get banned users',
-                    },
-                    {
-                        name: 'Moderation - Ban User',
-                        value: 'banUser',
-                        action: 'Ban user',
-                    },
-                    {
-                        name: 'Moderation - Unban User',
-                        value: 'unbanUser',
-                        action: 'Unban user',
-                    },
-                    {
-                        name: 'Moderation - Get Moderators',
-                        value: 'getModerators',
-                        action: 'Get moderators',
-                    },
-                    {
-                        name: 'Moderation - Add Channel Moderator',
-                        value: 'addChannelModerator',
-                        action: 'Add channel moderator',
-                    },
-                    {
-                        name: 'Moderation - Remove Channel Moderator',
-                        value: 'removeChannelModerator',
-                        action: 'Remove channel moderator',
-                    },
-                    {
-                        name: 'Moderation - Get AutoMod Settings',
-                        value: 'getAutoModSettings',
-                        action: 'Get automod settings',
-                    },
-                    {
-                        name: 'Moderation - Update AutoMod Settings',
-                        value: 'updateAutoModSettings',
-                        action: 'Update automod settings',
-                    },
-                    {
-                        name: 'Moderation - Get Blocked Terms',
-                        value: 'getBlockedTerms',
-                        action: 'Get blocked terms',
-                    },
-                    {
-                        name: 'Moderation - Add Blocked Term',
-                        value: 'addBlockedTerm',
-                        action: 'Add blocked term',
-                    },
-                    {
-                        name: 'Moderation - Remove Blocked Term',
-                        value: 'removeBlockedTerm',
-                        action: 'Remove blocked term',
+                        name: 'Videos - Delete Videos',
+                        value: 'deleteVideos',
+                        action: 'Delete videos',
                     },
                     {
                         name: 'Videos - Get Videos',
@@ -301,94 +386,9 @@ export class Twitch implements INodeType {
                         action: 'Get videos',
                     },
                     {
-                        name: 'Videos - Delete Videos',
-                        value: 'deleteVideos',
-                        action: 'Delete videos',
-                    },
-                    {
                         name: 'Videos - Update Video',
                         value: 'updateVideo',
                         action: 'Update video',
-                    },
-                    {
-                        name: 'Subscriptions - Get Broadcaster Subscriptions',
-                        value: 'getBroadcasterSubscriptions',
-                        action: 'Get broadcaster subscriptions',
-                    },
-                    {
-                        name: 'Subscriptions - Check User Subscription',
-                        value: 'checkUserSubscription',
-                        action: 'Check user subscription',
-                    },
-                    {
-                        name: 'Channel Points - Get Custom Reward',
-                        value: 'getCustomReward',
-                        action: 'Get custom reward',
-                    },
-                    {
-                        name: 'Channel Points - Create Custom Rewards',
-                        value: 'createCustomRewards',
-                        action: 'Create custom rewards',
-                    },
-                    {
-                        name: 'Channel Points - Update Custom Reward',
-                        value: 'updateCustomReward',
-                        action: 'Update custom reward',
-                    },
-                    {
-                        name: 'Channel Points - Delete Custom Reward',
-                        value: 'deleteCustomReward',
-                        action: 'Delete custom reward',
-                    },
-                    {
-                        name: 'Channel Points - Get Custom Reward Redemption',
-                        value: 'getCustomRewardRedemption',
-                        action: 'Get custom reward redemption',
-                    },
-                    {
-                        name: 'Channel Points - Update Redemption Status',
-                        value: 'updateRedemptionStatus',
-                        action: 'Update redemption status',
-                    },
-                    {
-                        name: 'Teams - Get Channel Teams',
-                        value: 'getChannelTeams',
-                        action: 'Get channel teams',
-                    },
-                    {
-                        name: 'Teams - Get Teams',
-                        value: 'getTeams',
-                        action: 'Get teams',
-                    },
-                    {
-                        name: 'Polls - Create Poll',
-                        value: 'createPoll',
-                        action: 'Create poll',
-                    },
-                    {
-                        name: 'Polls - Get Polls',
-                        value: 'getPolls',
-                        action: 'Get polls',
-                    },
-                    {
-                        name: 'Polls - End Poll',
-                        value: 'endPoll',
-                        action: 'End poll',
-                    },
-                    {
-                        name: 'Predictions - Create Prediction',
-                        value: 'createPrediction',
-                        action: 'Create prediction',
-                    },
-                    {
-                        name: 'Predictions - Get Predictions',
-                        value: 'getPredictions',
-                        action: 'Get predictions',
-                    },
-                    {
-                        name: 'Predictions - End Prediction',
-                        value: 'endPrediction',
-                        action: 'End prediction',
                     },
                 ],
             },
