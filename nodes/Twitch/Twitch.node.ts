@@ -6,7 +6,7 @@ import {
     NodeOperationError,
 } from 'n8n-workflow';
 
-import { twitchApiRequest } from './GenericFunctions.js';
+import { twitchApiRequest } from './GenericFunctions';
 
 export class Twitch implements INodeType {
     description: INodeTypeDescription = {

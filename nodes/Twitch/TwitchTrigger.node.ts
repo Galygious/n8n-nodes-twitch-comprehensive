@@ -10,7 +10,7 @@ import {
 	IWebhookResponseData
 } from 'n8n-workflow';
 
-import { twitchApiRequest } from './GenericFunctions.js';
+import { twitchApiRequest } from './GenericFunctions';
 
 export class TwitchTrigger implements INodeType {
 	description: INodeTypeDescription = {

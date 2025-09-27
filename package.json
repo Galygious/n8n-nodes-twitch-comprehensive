@@ -26,7 +26,6 @@
     "type": "git",
     "url": "git+https://github.com/Galygious/n8n-nodes-twitch-comprehensive.git"
   },
-  "type": "module",
   "engines": {
     "node": ">=20.0.0",
     "npm": ">=10.0.0"
