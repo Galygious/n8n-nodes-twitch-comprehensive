@@ -350,6 +350,46 @@ export class Twitch implements INodeType {
                         value: 'updateRedemptionStatus',
                         action: 'Update redemption status',
                     },
+                    {
+                        name: 'Teams - Get Channel Teams',
+                        value: 'getChannelTeams',
+                        action: 'Get channel teams',
+                    },
+                    {
+                        name: 'Teams - Get Teams',
+                        value: 'getTeams',
+                        action: 'Get teams',
+                    },
+                    {
+                        name: 'Polls - Create Poll',
+                        value: 'createPoll',
+                        action: 'Create poll',
+                    },
+                    {
+                        name: 'Polls - Get Polls',
+                        value: 'getPolls',
+                        action: 'Get polls',
+                    },
+                    {
+                        name: 'Polls - End Poll',
+                        value: 'endPoll',
+                        action: 'End poll',
+                    },
+                    {
+                        name: 'Predictions - Create Prediction',
+                        value: 'createPrediction',
+                        action: 'Create prediction',
+                    },
+                    {
+                        name: 'Predictions - Get Predictions',
+                        value: 'getPredictions',
+                        action: 'Get predictions',
+                    },
+                    {
+                        name: 'Predictions - End Prediction',
+                        value: 'endPrediction',
+                        action: 'End prediction',
+                    },
                 ],
             },
             {
@@ -1932,6 +1972,226 @@ export class Twitch implements INodeType {
                 },
             },
             {
+                displayName: 'Broadcaster ID',
+                name: 'broadcaster_id_teams',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the broadcaster whose teams you want to get',
+                displayOptions: {
+                    show: {
+                        operation: ['getChannelTeams'],
+                    },
+                },
+            },
+            {
+                displayName: 'Team Name',
+                name: 'team_name',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The name of the team to get',
+                displayOptions: {
+                    show: {
+                        operation: ['getTeams'],
+                    },
+                },
+            },
+            {
+                displayName: 'Team ID',
+                name: 'team_id',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The ID of the team to get',
+                displayOptions: {
+                    show: {
+                        operation: ['getTeams'],
+                    },
+                },
+            },
+            {
+                displayName: 'Broadcaster ID',
+                name: 'broadcaster_id_polls',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the broadcaster creating/managing the poll',
+                displayOptions: {
+                    show: {
+                        operation: ['createPoll', 'getPolls', 'endPoll'],
+                    },
+                },
+            },
+            {
+                displayName: 'Poll Title',
+                name: 'poll_title',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The title of the poll',
+                displayOptions: {
+                    show: {
+                        operation: ['createPoll'],
+                    },
+                },
+            },
+            {
+                displayName: 'Poll Choices',
+                name: 'poll_choices',
+                type: 'json',
+                required: true,
+                default: '[]',
+                description: 'Array of poll choices (JSON format)',
+                displayOptions: {
+                    show: {
+                        operation: ['createPoll'],
+                    },
+                },
+            },
+            {
+                displayName: 'Poll Duration',
+                name: 'poll_duration',
+                type: 'number',
+                required: true,
+                default: 60,
+                description: 'Duration of the poll in seconds',
+                displayOptions: {
+                    show: {
+                        operation: ['createPoll'],
+                    },
+                },
+            },
+            {
+                displayName: 'Poll ID',
+                name: 'poll_id',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the poll to end',
+                displayOptions: {
+                    show: {
+                        operation: ['endPoll'],
+                    },
+                },
+            },
+            {
+                displayName: 'Poll Status',
+                name: 'poll_status',
+                type: 'options',
+                options: [
+                    { name: 'ACTIVE', value: 'ACTIVE' },
+                    { name: 'COMPLETED', value: 'COMPLETED' },
+                    { name: 'TERMINATED', value: 'TERMINATED' },
+                    { name: 'ARCHIVED', value: 'ARCHIVED' },
+                ],
+                required: false,
+                default: 'ACTIVE',
+                description: 'The status of polls to get',
+                displayOptions: {
+                    show: {
+                        operation: ['getPolls'],
+                    },
+                },
+            },
+            {
+                displayName: 'Broadcaster ID',
+                name: 'broadcaster_id_predictions',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the broadcaster creating/managing the prediction',
+                displayOptions: {
+                    show: {
+                        operation: ['createPrediction', 'getPredictions', 'endPrediction'],
+                    },
+                },
+            },
+            {
+                displayName: 'Prediction Title',
+                name: 'prediction_title',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The title of the prediction',
+                displayOptions: {
+                    show: {
+                        operation: ['createPrediction'],
+                    },
+                },
+            },
+            {
+                displayName: 'Prediction Outcomes',
+                name: 'prediction_outcomes',
+                type: 'json',
+                required: true,
+                default: '[]',
+                description: 'Array of prediction outcomes (JSON format)',
+                displayOptions: {
+                    show: {
+                        operation: ['createPrediction'],
+                    },
+                },
+            },
+            {
+                displayName: 'Prediction Window',
+                name: 'prediction_window',
+                type: 'number',
+                required: true,
+                default: 60,
+                description: 'Duration of the prediction window in seconds',
+                displayOptions: {
+                    show: {
+                        operation: ['createPrediction'],
+                    },
+                },
+            },
+            {
+                displayName: 'Prediction ID',
+                name: 'prediction_id',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the prediction to end',
+                displayOptions: {
+                    show: {
+                        operation: ['endPrediction'],
+                    },
+                },
+            },
+            {
+                displayName: 'Prediction Status',
+                name: 'prediction_status',
+                type: 'options',
+                options: [
+                    { name: 'ACTIVE', value: 'ACTIVE' },
+                    { name: 'RESOLVED', value: 'RESOLVED' },
+                    { name: 'CANCELED', value: 'CANCELED' },
+                    { name: 'LOCKED', value: 'LOCKED' },
+                ],
+                required: false,
+                default: 'ACTIVE',
+                description: 'The status of predictions to get',
+                displayOptions: {
+                    show: {
+                        operation: ['getPredictions'],
+                    },
+                },
+            },
+            {
+                displayName: 'Winning Outcome ID',
+                name: 'winning_outcome_id',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The ID of the winning outcome (required if status is RESOLVED)',
+                displayOptions: {
+                    show: {
+                        operation: ['endPrediction'],
+                    },
+                },
+            },
+            {
                 displayName: 'Channel Name',
                 name: 'channel_name',
                 type: 'string',
@@ -3464,6 +3724,200 @@ export class Twitch implements INodeType {
                     '/channel_points/custom_rewards/redemptions',
                     body,
                     { broadcaster_id: broadcasterId, reward_id: rewardId, id: redemptionId },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getChannelTeams') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_teams', i) as string;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/teams/channel',
+                    {},
+                    { broadcaster_id: broadcasterId },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getTeams') {
+                const teamName = this.getNodeParameter('team_name', i) as string;
+                const teamId = this.getNodeParameter('team_id', i) as string;
+
+                const query: IDataObject = {};
+                if (teamName) query.name = teamName;
+                if (teamId) query.id = teamId;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/teams',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'createPoll') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_polls', i) as string;
+                const title = this.getNodeParameter('poll_title', i) as string;
+                const choices = this.getNodeParameter('poll_choices', i) as string;
+                const duration = this.getNodeParameter('poll_duration', i) as number;
+
+                let choicesData: IDataObject[];
+                try {
+                    choicesData = JSON.parse(choices);
+                } catch (error) {
+                    throw new NodeOperationError(this.getNode(), 'Invalid JSON in poll choices');
+                }
+
+                const body: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                    title: title,
+                    choices: choicesData,
+                    duration: duration,
+                };
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'POST',
+                    '/polls',
+                    body,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getPolls') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_polls', i) as string;
+                const status = this.getNodeParameter('poll_status', i) as string;
+
+                const query: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                };
+                if (status && status !== 'ACTIVE') query.status = status;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/polls',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'endPoll') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_polls', i) as string;
+                const pollId = this.getNodeParameter('poll_id', i) as string;
+                const status = this.getNodeParameter('poll_status', i) as string;
+
+                const body: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                    id: pollId,
+                    status: status,
+                };
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'PATCH',
+                    '/polls',
+                    body,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'createPrediction') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_predictions', i) as string;
+                const title = this.getNodeParameter('prediction_title', i) as string;
+                const outcomes = this.getNodeParameter('prediction_outcomes', i) as string;
+                const predictionWindow = this.getNodeParameter('prediction_window', i) as number;
+
+                let outcomesData: IDataObject[];
+                try {
+                    outcomesData = JSON.parse(outcomes);
+                } catch (error) {
+                    throw new NodeOperationError(this.getNode(), 'Invalid JSON in prediction outcomes');
+                }
+
+                const body: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                    title: title,
+                    outcomes: outcomesData,
+                    prediction_window: predictionWindow,
+                };
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'POST',
+                    '/predictions',
+                    body,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getPredictions') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_predictions', i) as string;
+                const status = this.getNodeParameter('prediction_status', i) as string;
+
+                const query: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                };
+                if (status && status !== 'ACTIVE') query.status = status;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/predictions',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'endPrediction') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_predictions', i) as string;
+                const predictionId = this.getNodeParameter('prediction_id', i) as string;
+                const status = this.getNodeParameter('prediction_status', i) as string;
+                const winningOutcomeId = this.getNodeParameter('winning_outcome_id', i) as string;
+
+                const body: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                    id: predictionId,
+                    status: status,
+                };
+
+                if (winningOutcomeId) body.winning_outcome_id = winningOutcomeId;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'PATCH',
+                    '/predictions',
+                    body,
                 );
 
                 if (Array.isArray(response.data)) {
