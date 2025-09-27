@@ -35,129 +35,9 @@ export class Twitch implements INodeType {
                 default: 'getChannelStreams',
                 options: [
                     {
-                        name: 'Get Channel Stream Schedule',
-                        value: 'getChannelStreamSchedule',
-                        action: 'Get channel stream schedule',
-                    },
-                    {
-                        name: 'Update Channel Stream Schedule',
-                        value: 'updateChannelStreamSchedule',
-                        action: 'Update channel stream schedule',
-                    },
-                    {
                         name: 'Create Channel Stream Schedule Segment',
                         value: 'createChannelStreamScheduleSegment',
                         action: 'Create channel stream schedule segment',
-                    },
-                    {
-                        name: 'Update Channel Stream Schedule Segment',
-                        value: 'updateChannelStreamScheduleSegment',
-                        action: 'Update channel stream schedule segment',
-                    },
-                    {
-                        name: 'Delete Channel Stream Schedule Segment',
-                        value: 'deleteChannelStreamScheduleSegment',
-                        action: 'Delete channel stream schedule segment',
-                    },
-                    {
-                        name: 'Get Streams',
-                        value: 'getStreams',
-                        action: 'Get streams',
-                    },
-                    {
-                        name: 'Get Followed Streams',
-                        value: 'getFollowedStreams',
-                        action: 'Get followed streams',
-                    },
-                    {
-                        name: 'Create Stream Marker',
-                        value: 'createStreamMarker',
-                        action: 'Create stream marker',
-                    },
-                    {
-                        name: 'Get Stream Markers',
-                        value: 'getStreamMarkers',
-                        action: 'Get stream markers',
-                    },
-                    {
-                        name: 'Get Extension Analytics',
-                        value: 'getExtensionAnalytics',
-                        action: 'Get extension analytics',
-                    },
-                    {
-                        name: 'Get Game Analytics',
-                        value: 'getGameAnalytics',
-                        action: 'Get game analytics',
-                    },
-                    {
-                        name: 'Get Bits Leaderboard',
-                        value: 'getBitsLeaderboard',
-                        action: 'Get bits leaderboard',
-                    },
-                    {
-                        name: 'Get Cheermotes',
-                        value: 'getCheermotes',
-                        action: 'Get cheermotes',
-                    },
-                    {
-                        name: 'Get Extension Transactions',
-                        value: 'getExtensionTransactions',
-                        action: 'Get extension transactions',
-                    },
-                    {
-                        name: 'Get Chatters',
-                        value: 'getChatters',
-                        action: 'Get chatters',
-                    },
-                    {
-                        name: 'Get Chat Settings',
-                        value: 'getChatSettings',
-                        action: 'Get chat settings',
-                    },
-                    {
-                        name: 'Update Chat Settings',
-                        value: 'updateChatSettings',
-                        action: 'Update chat settings',
-                    },
-                    {
-                        name: 'Send Chat Announcement',
-                        value: 'sendChatAnnouncement',
-                        action: 'Send chat announcement',
-                    },
-                    {
-                        name: 'Get User Chat Color',
-                        value: 'getUserChatColor',
-                        action: 'Get user chat color',
-                    },
-                    {
-                        name: 'Update User Chat Color',
-                        value: 'updateUserChatColor',
-                        action: 'Update user chat color',
-                    },
-                    {
-                        name: 'Get Channel Emotes',
-                        value: 'getChannelEmotes',
-                        action: 'Get channel emotes',
-                    },
-                    {
-                        name: 'Get Global Emotes',
-                        value: 'getGlobalEmotes',
-                        action: 'Get global emotes',
-                    },
-                    {
-                        name: 'Get Emote Sets',
-                        value: 'getEmoteSets',
-                        action: 'Get emote sets',
-                    },
-                    {
-                        name: 'Get Channel Chat Badges',
-                        value: 'getChannelChatBadges',
-                        action: 'Get channel chat badges',
-                    },
-                    {
-                        name: 'Get Global Chat Badges',
-                        value: 'getGlobalChatBadges',
-                        action: 'Get global chat badges',
                     },
                     {
                         name: 'Create Clip',
@@ -165,9 +45,34 @@ export class Twitch implements INodeType {
                         action: 'Create clip',
                     },
                     {
-                        name: 'Get Clips',
-                        value: 'getClips',
-                        action: 'Get clips',
+                        name: 'Create Stream Marker',
+                        value: 'createStreamMarker',
+                        action: 'Create stream marker',
+                    },
+                    {
+                        name: 'Delete Channel Stream Schedule Segment',
+                        value: 'deleteChannelStreamScheduleSegment',
+                        action: 'Delete channel stream schedule segment',
+                    },
+                    {
+                        name: 'Get Bits Leaderboard',
+                        value: 'getBitsLeaderboard',
+                        action: 'Get bits leaderboard',
+                    },
+                    {
+                        name: 'Get Channel Chat Badges',
+                        value: 'getChannelChatBadges',
+                        action: 'Get channel chat badges',
+                    },
+                    {
+                        name: 'Get Channel Emotes',
+                        value: 'getChannelEmotes',
+                        action: 'Get channel emotes',
+                    },
+                    {
+                        name: 'Get Channel Stream Schedule',
+                        value: 'getChannelStreamSchedule',
+                        action: 'Get channel stream schedule',
                     },
                     {
                         name: 'Get Channel Streams',
@@ -175,14 +80,94 @@ export class Twitch implements INodeType {
                         action: 'Get channel streams',
                     },
                     {
+                        name: 'Get Chat Settings',
+                        value: 'getChatSettings',
+                        action: 'Get chat settings',
+                    },
+                    {
+                        name: 'Get Chatters',
+                        value: 'getChatters',
+                        action: 'Get chatters',
+                    },
+                    {
+                        name: 'Get Cheermotes',
+                        value: 'getCheermotes',
+                        action: 'Get cheermotes',
+                    },
+                    {
+                        name: 'Get Clips',
+                        value: 'getClips',
+                        action: 'Get clips',
+                    },
+                    {
+                        name: 'Get Emote Sets',
+                        value: 'getEmoteSets',
+                        action: 'Get emote sets',
+                    },
+                    {
+                        name: 'Get Extension Analytics',
+                        value: 'getExtensionAnalytics',
+                        action: 'Get extension analytics',
+                    },
+                    {
+                        name: 'Get Extension Transactions',
+                        value: 'getExtensionTransactions',
+                        action: 'Get extension transactions',
+                    },
+                    {
+                        name: 'Get Followed Streams',
+                        value: 'getFollowedStreams',
+                        action: 'Get followed streams',
+                    },
+                    {
+                        name: 'Get Game Analytics',
+                        value: 'getGameAnalytics',
+                        action: 'Get game analytics',
+                    },
+                    {
                         name: 'Get Game Details',
                         value: 'getGameDetails',
                         action: 'Get game details',
                     },
                     {
+                        name: 'Get Global Chat Badges',
+                        value: 'getGlobalChatBadges',
+                        action: 'Get global chat badges',
+                    },
+                    {
+                        name: 'Get Global Emotes',
+                        value: 'getGlobalEmotes',
+                        action: 'Get global emotes',
+                    },
+                    {
+                        name: 'Get Stream Markers',
+                        value: 'getStreamMarkers',
+                        action: 'Get stream markers',
+                    },
+                    {
+                        name: 'Get Streams',
+                        value: 'getStreams',
+                        action: 'Get streams',
+                    },
+                    {
                         name: 'Get Top Games',
                         value: 'getTopGames',
                         action: 'Get top games',
+                    },
+                    {
+                        name: 'Get User Chat Color',
+                        value: 'getUserChatColor',
+                        action: 'Get user chat color',
+                    },
+                    {
+                        name: 'Get Users',
+                        value: 'getUsers',
+                        action: 'Get users',
+                    },
+                    {
+                        name: 'Get Users Follows',
+                        value: 'getUsersFollows',
+                        action: 'Get users follows',
                     },
                     {
                         name: 'Search Categories',
@@ -193,6 +178,36 @@ export class Twitch implements INodeType {
                         name: 'Search Channels',
                         value: 'searchChannels',
                         action: 'Search channels',
+                    },
+                    {
+                        name: 'Send Chat Announcement',
+                        value: 'sendChatAnnouncement',
+                        action: 'Send chat announcement',
+                    },
+                    {
+                        name: 'Update Channel Stream Schedule',
+                        value: 'updateChannelStreamSchedule',
+                        action: 'Update channel stream schedule',
+                    },
+                    {
+                        name: 'Update Channel Stream Schedule Segment',
+                        value: 'updateChannelStreamScheduleSegment',
+                        action: 'Update channel stream schedule segment',
+                    },
+                    {
+                        name: 'Update Chat Settings',
+                        value: 'updateChatSettings',
+                        action: 'Update chat settings',
+                    },
+                    {
+                        name: 'Update User',
+                        value: 'updateUser',
+                        action: 'Update user',
+                    },
+                    {
+                        name: 'Update User Chat Color',
+                        value: 'updateUserChatColor',
+                        action: 'Update user chat color',
                     },
                 ],
             },
@@ -213,7 +228,7 @@ export class Twitch implements INodeType {
                 displayName: 'User ID',
                 name: 'user_id',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'A user ID used to filter the list of streams',
                 displayOptions: {
@@ -226,7 +241,7 @@ export class Twitch implements INodeType {
                 displayName: 'User Login',
                 name: 'user_login',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'A user login name used to filter the list of streams',
                 displayOptions: {
@@ -239,7 +254,7 @@ export class Twitch implements INodeType {
                 displayName: 'Game ID',
                 name: 'game_id',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'A game ID used to filter the list of streams',
                 displayOptions: {
@@ -252,7 +267,7 @@ export class Twitch implements INodeType {
                 displayName: 'Language',
                 name: 'language',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'A language code used to filter the list of streams',
                 displayOptions: {
@@ -265,7 +280,7 @@ export class Twitch implements INodeType {
                 displayName: 'Type',
                 name: 'type',
                 type: 'options',
-                required: false,
+
                 default: 'all',
                 options: [
                     {
@@ -289,7 +304,7 @@ export class Twitch implements INodeType {
                 name: 'first',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 100 },
-                required: false,
+
                 default: 20,
                 description: 'The maximum number of items to return per page',
                 displayOptions: {
@@ -302,7 +317,7 @@ export class Twitch implements INodeType {
                 displayName: 'After',
                 name: 'after',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The cursor used to get the next page of results',
                 displayOptions: {
@@ -315,7 +330,7 @@ export class Twitch implements INodeType {
                 displayName: 'Before',
                 name: 'before',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The cursor used to get the previous page of results',
                 displayOptions: {
@@ -341,7 +356,7 @@ export class Twitch implements INodeType {
                 displayName: 'Description',
                 name: 'description',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'A short description of the marker to help the user identify it',
                 displayOptions: {
@@ -367,7 +382,7 @@ export class Twitch implements INodeType {
                 displayName: 'Video ID',
                 name: 'video_id',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'A video ID used to filter the list of markers',
                 displayOptions: {
@@ -452,7 +467,7 @@ export class Twitch implements INodeType {
                 name: 'first_analytics',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 100 },
-                required: false,
+
                 default: 20,
                 description: 'The maximum number of items to return per page',
                 displayOptions: {
@@ -465,7 +480,7 @@ export class Twitch implements INodeType {
                 displayName: 'After',
                 name: 'after_analytics',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The cursor used to get the next page of results',
                 displayOptions: {
@@ -492,7 +507,7 @@ export class Twitch implements INodeType {
                 name: 'count',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 100 },
-                required: false,
+
                 default: 10,
                 description: 'The number of results to be returned',
                 displayOptions: {
@@ -505,7 +520,7 @@ export class Twitch implements INodeType {
                 displayName: 'Period',
                 name: 'period',
                 type: 'options',
-                required: false,
+
                 default: 'all',
                 options: [
                     {
@@ -517,12 +532,12 @@ export class Twitch implements INodeType {
                         value: 'day',
                     },
                     {
-                        name: 'Week',
-                        value: 'week',
-                    },
-                    {
                         name: 'Month',
                         value: 'month',
+                    },
+                    {
+                        name: 'Week',
+                        value: 'week',
                     },
                     {
                         name: 'Year',
@@ -540,7 +555,7 @@ export class Twitch implements INodeType {
                 displayName: 'Started At',
                 name: 'started_at_bits',
                 type: 'dateTime',
-                required: false,
+
                 default: '',
                 description: 'The start date for the leaderboard (ISO 8601 format)',
                 displayOptions: {
@@ -553,7 +568,7 @@ export class Twitch implements INodeType {
                 displayName: 'User ID',
                 name: 'user_id_bits',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The ID of the user whose rank you want to get',
                 displayOptions: {
@@ -566,7 +581,7 @@ export class Twitch implements INodeType {
                 displayName: 'Broadcaster ID',
                 name: 'broadcaster_id_cheermotes',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The ID of the broadcaster whose Cheermotes you want to get',
                 displayOptions: {
@@ -592,7 +607,7 @@ export class Twitch implements INodeType {
                 displayName: 'ID',
                 name: 'id',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The ID of a specific transaction to look up',
                 displayOptions: {
@@ -606,7 +621,7 @@ export class Twitch implements INodeType {
                 name: 'first_bits',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 100 },
-                required: false,
+
                 default: 20,
                 description: 'The maximum number of items to return per page',
                 displayOptions: {
@@ -619,7 +634,7 @@ export class Twitch implements INodeType {
                 displayName: 'After',
                 name: 'after_bits',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The cursor used to get the next page of results',
                 displayOptions: {
@@ -659,7 +674,7 @@ export class Twitch implements INodeType {
                 name: 'first_chat',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 1000 },
-                required: false,
+
                 default: 100,
                 description: 'The maximum number of items to return per page',
                 displayOptions: {
@@ -672,7 +687,7 @@ export class Twitch implements INodeType {
                 displayName: 'After',
                 name: 'after_chat',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The cursor used to get the next page of results',
                 displayOptions: {
@@ -685,7 +700,7 @@ export class Twitch implements INodeType {
                 displayName: 'Emote Mode',
                 name: 'emote_mode',
                 type: 'boolean',
-                required: false,
+
                 default: false,
                 description: 'Whether emote-only mode is enabled',
                 displayOptions: {
@@ -698,7 +713,7 @@ export class Twitch implements INodeType {
                 displayName: 'Follower Mode',
                 name: 'follower_mode',
                 type: 'boolean',
-                required: false,
+
                 default: false,
                 description: 'Whether follower-only mode is enabled',
                 displayOptions: {
@@ -711,7 +726,7 @@ export class Twitch implements INodeType {
                 displayName: 'Follower Mode Duration',
                 name: 'follower_mode_duration',
                 type: 'number',
-                required: false,
+
                 default: 0,
                 description: 'The length of time, in minutes, that users must follow the broadcaster before being able to participate in the chat room',
                 displayOptions: {
@@ -724,7 +739,7 @@ export class Twitch implements INodeType {
                 displayName: 'Non Moderator Chat Delay',
                 name: 'non_moderator_chat_delay',
                 type: 'boolean',
-                required: false,
+
                 default: false,
                 description: 'Whether non-moderator chat delay is enabled',
                 displayOptions: {
@@ -737,7 +752,7 @@ export class Twitch implements INodeType {
                 displayName: 'Non Moderator Chat Delay Duration',
                 name: 'non_moderator_chat_delay_duration',
                 type: 'number',
-                required: false,
+
                 default: 0,
                 description: 'The amount of time, in seconds, that messages are delayed from appearing in chat',
                 displayOptions: {
@@ -750,7 +765,7 @@ export class Twitch implements INodeType {
                 displayName: 'Slow Mode',
                 name: 'slow_mode',
                 type: 'boolean',
-                required: false,
+
                 default: false,
                 description: 'Whether slow mode is enabled',
                 displayOptions: {
@@ -763,7 +778,7 @@ export class Twitch implements INodeType {
                 displayName: 'Slow Mode Wait Time',
                 name: 'slow_mode_wait_time',
                 type: 'number',
-                required: false,
+
                 default: 0,
                 description: 'The amount of time, in seconds, that users need to wait between sending messages',
                 displayOptions: {
@@ -776,7 +791,7 @@ export class Twitch implements INodeType {
                 displayName: 'Subscriber Mode',
                 name: 'subscriber_mode',
                 type: 'boolean',
-                required: false,
+
                 default: false,
                 description: 'Whether subscriber-only mode is enabled',
                 displayOptions: {
@@ -789,7 +804,7 @@ export class Twitch implements INodeType {
                 displayName: 'Unique Chat Mode',
                 name: 'unique_chat_mode',
                 type: 'boolean',
-                required: false,
+
                 default: false,
                 description: 'Whether unique chat mode is enabled',
                 displayOptions: {
@@ -815,7 +830,7 @@ export class Twitch implements INodeType {
                 displayName: 'Color',
                 name: 'color',
                 type: 'options',
-                required: false,
+
                 default: 'primary',
                 options: [
                     {
@@ -831,12 +846,12 @@ export class Twitch implements INodeType {
                         value: 'orange',
                     },
                     {
-                        name: 'Purple',
-                        value: 'purple',
-                    },
-                    {
                         name: 'Primary',
                         value: 'primary',
+                    },
+                    {
+                        name: 'Purple',
+                        value: 'purple',
                     },
                 ],
                 description: 'The color used to highlight the announcement',
@@ -938,7 +953,7 @@ export class Twitch implements INodeType {
                 displayName: 'Emote Set ID',
                 name: 'emote_set_id',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'An emote set ID',
                 displayOptions: {
@@ -964,7 +979,7 @@ export class Twitch implements INodeType {
                 displayName: 'Has Delay',
                 name: 'has_delay',
                 type: 'boolean',
-                required: false,
+
                 default: false,
                 description: 'Whether the clip should be created with a delay',
                 displayOptions: {
@@ -977,7 +992,7 @@ export class Twitch implements INodeType {
                 displayName: 'Clip ID',
                 name: 'clip_id',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'A clip ID',
                 displayOptions: {
@@ -990,7 +1005,7 @@ export class Twitch implements INodeType {
                 displayName: 'Broadcaster ID',
                 name: 'broadcaster_id_clips_get',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The ID of the broadcaster whose clips you want to get',
                 displayOptions: {
@@ -1003,7 +1018,7 @@ export class Twitch implements INodeType {
                 displayName: 'Game ID',
                 name: 'game_id_clips',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'A game ID',
                 displayOptions: {
@@ -1016,7 +1031,7 @@ export class Twitch implements INodeType {
                 displayName: 'Started At',
                 name: 'started_at_clips',
                 type: 'dateTime',
-                required: false,
+
                 default: '',
                 description: 'The start date for the clips (ISO 8601 format)',
                 displayOptions: {
@@ -1029,7 +1044,7 @@ export class Twitch implements INodeType {
                 displayName: 'Ended At',
                 name: 'ended_at_clips',
                 type: 'dateTime',
-                required: false,
+
                 default: '',
                 description: 'The end date for the clips (ISO 8601 format)',
                 displayOptions: {
@@ -1043,7 +1058,7 @@ export class Twitch implements INodeType {
                 name: 'first_clips',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 100 },
-                required: false,
+
                 default: 20,
                 description: 'The maximum number of items to return per page',
                 displayOptions: {
@@ -1056,7 +1071,7 @@ export class Twitch implements INodeType {
                 displayName: 'After',
                 name: 'after_clips',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The cursor used to get the next page of results',
                 displayOptions: {
@@ -1069,12 +1084,104 @@ export class Twitch implements INodeType {
                 displayName: 'Before',
                 name: 'before_clips',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The cursor used to get the previous page of results',
                 displayOptions: {
                     show: {
                         operation: ['getClips'],
+                    },
+                },
+            },
+            {
+                displayName: 'User ID',
+                name: 'user_id_users',
+                type: 'string',
+
+                default: '',
+                description: 'User ID(s) to fetch',
+                displayOptions: {
+                    show: {
+                        operation: ['getUsers'],
+                    },
+                },
+            },
+            {
+                displayName: 'User Login',
+                name: 'user_login_users',
+                type: 'string',
+
+                default: '',
+                description: 'Username(s) to fetch',
+                displayOptions: {
+                    show: {
+                        operation: ['getUsers'],
+                    },
+                },
+            },
+            {
+                displayName: 'From User ID',
+                name: 'from_user_id',
+                type: 'string',
+
+                default: '',
+                description: 'User ID of the follower',
+                displayOptions: {
+                    show: {
+                        operation: ['getUsersFollows'],
+                    },
+                },
+            },
+            {
+                displayName: 'To User ID',
+                name: 'to_user_id',
+                type: 'string',
+
+                default: '',
+                description: 'User ID of the followed user',
+                displayOptions: {
+                    show: {
+                        operation: ['getUsersFollows'],
+                    },
+                },
+            },
+            {
+                displayName: 'First',
+                name: 'first_users',
+                type: 'number',
+                typeOptions: { minValue: 1, maxValue: 100 },
+
+                default: 20,
+                description: 'The maximum number of items to return per page',
+                displayOptions: {
+                    show: {
+                        operation: ['getUsersFollows'],
+                    },
+                },
+            },
+            {
+                displayName: 'After',
+                name: 'after_users',
+                type: 'string',
+
+                default: '',
+                description: 'The cursor used to get the next page of results',
+                displayOptions: {
+                    show: {
+                        operation: ['getUsersFollows'],
+                    },
+                },
+            },
+            {
+                displayName: 'Description',
+                name: 'description',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'New description for the user',
+                displayOptions: {
+                    show: {
+                        operation: ['updateUser'],
                     },
                 },
             },
@@ -1134,7 +1241,7 @@ export class Twitch implements INodeType {
                 displayName: 'Start Time',
                 name: 'start_time',
                 type: 'dateTime',
-                required: false,
+
                 default: '',
                 description: 'The start time of the segment (ISO 8601 format)',
                 displayOptions: {
@@ -1160,7 +1267,7 @@ export class Twitch implements INodeType {
                 displayName: 'Category ID',
                 name: 'category_id',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The ID of the category/game for the segment',
                 displayOptions: {
@@ -1173,7 +1280,7 @@ export class Twitch implements INodeType {
                 displayName: 'Title',
                 name: 'title',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The title of the segment',
                 displayOptions: {
@@ -1186,7 +1293,7 @@ export class Twitch implements INodeType {
                 displayName: 'Is Recurring',
                 name: 'is_recurring',
                 type: 'boolean',
-                required: false,
+
                 default: false,
                 description: 'Whether the segment is recurring',
                 displayOptions: {
@@ -1199,7 +1306,7 @@ export class Twitch implements INodeType {
                 displayName: 'Timezone',
                 name: 'timezone',
                 type: 'string',
-                required: false,
+
                 default: 'UTC',
                 description: 'The timezone for the schedule (IANA timezone format)',
                 displayOptions: {
@@ -1212,7 +1319,7 @@ export class Twitch implements INodeType {
                 displayName: 'Is Vacation Enabled',
                 name: 'is_vacation_enabled',
                 type: 'boolean',
-                required: false,
+
                 default: false,
                 description: 'Whether vacation mode is enabled',
                 displayOptions: {
@@ -1225,7 +1332,7 @@ export class Twitch implements INodeType {
                 displayName: 'Vacation Start Time',
                 name: 'vacation_start_time',
                 type: 'dateTime',
-                required: false,
+
                 default: '',
                 description: 'The start time of the vacation (ISO 8601 format)',
                 displayOptions: {
@@ -1238,7 +1345,7 @@ export class Twitch implements INodeType {
                 displayName: 'Vacation End Time',
                 name: 'vacation_end_time',
                 type: 'dateTime',
-                required: false,
+
                 default: '',
                 description: 'The end time of the vacation (ISO 8601 format)',
                 displayOptions: {
@@ -1876,6 +1983,71 @@ export class Twitch implements INodeType {
                     '/clips',
                     {},
                     query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getUsers') {
+                const userId = this.getNodeParameter('user_id_users', i) as string;
+                const userLogin = this.getNodeParameter('user_login_users', i) as string;
+
+                const query: IDataObject = {};
+                if (userId) query.id = userId;
+                if (userLogin) query.login = userLogin;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/users',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getUsersFollows') {
+                const fromUserId = this.getNodeParameter('from_user_id', i) as string;
+                const toUserId = this.getNodeParameter('to_user_id', i) as string;
+                const first = this.getNodeParameter('first_users', i) as number;
+                const after = this.getNodeParameter('after_users', i) as string;
+
+                const query: IDataObject = {};
+                if (fromUserId) query.from_id = fromUserId;
+                if (toUserId) query.to_id = toUserId;
+                if (first) query.first = first;
+                if (after) query.after = after;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/users/follows',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'updateUser') {
+                const description = this.getNodeParameter('description', i) as string;
+
+                const body: IDataObject = {
+                    description: description,
+                };
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'PUT',
+                    '/users',
+                    body,
                 );
 
                 if (Array.isArray(response.data)) {
