@@ -295,6 +295,61 @@ export class Twitch implements INodeType {
                         value: 'removeBlockedTerm',
                         action: 'Remove blocked term',
                     },
+                    {
+                        name: 'Videos - Get Videos',
+                        value: 'getVideos',
+                        action: 'Get videos',
+                    },
+                    {
+                        name: 'Videos - Delete Videos',
+                        value: 'deleteVideos',
+                        action: 'Delete videos',
+                    },
+                    {
+                        name: 'Videos - Update Video',
+                        value: 'updateVideo',
+                        action: 'Update video',
+                    },
+                    {
+                        name: 'Subscriptions - Get Broadcaster Subscriptions',
+                        value: 'getBroadcasterSubscriptions',
+                        action: 'Get broadcaster subscriptions',
+                    },
+                    {
+                        name: 'Subscriptions - Check User Subscription',
+                        value: 'checkUserSubscription',
+                        action: 'Check user subscription',
+                    },
+                    {
+                        name: 'Channel Points - Get Custom Reward',
+                        value: 'getCustomReward',
+                        action: 'Get custom reward',
+                    },
+                    {
+                        name: 'Channel Points - Create Custom Rewards',
+                        value: 'createCustomRewards',
+                        action: 'Create custom rewards',
+                    },
+                    {
+                        name: 'Channel Points - Update Custom Reward',
+                        value: 'updateCustomReward',
+                        action: 'Update custom reward',
+                    },
+                    {
+                        name: 'Channel Points - Delete Custom Reward',
+                        value: 'deleteCustomReward',
+                        action: 'Delete custom reward',
+                    },
+                    {
+                        name: 'Channel Points - Get Custom Reward Redemption',
+                        value: 'getCustomRewardRedemption',
+                        action: 'Get custom reward redemption',
+                    },
+                    {
+                        name: 'Channel Points - Update Redemption Status',
+                        value: 'updateRedemptionStatus',
+                        action: 'Update redemption status',
+                    },
                 ],
             },
             {
@@ -1541,6 +1596,342 @@ export class Twitch implements INodeType {
                 },
             },
             {
+                displayName: 'Video ID',
+                name: 'video_id',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'ID of the video(s) to get (comma-separated for multiple)',
+                displayOptions: {
+                    show: {
+                        operation: ['getVideos', 'deleteVideos', 'updateVideo'],
+                    },
+                },
+            },
+            {
+                displayName: 'User ID',
+                name: 'user_id_videos',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'ID of the user who owns the videos',
+                displayOptions: {
+                    show: {
+                        operation: ['getVideos'],
+                    },
+                },
+            },
+            {
+                displayName: 'Game ID',
+                name: 'game_id_videos',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'ID of the game/category',
+                displayOptions: {
+                    show: {
+                        operation: ['getVideos'],
+                    },
+                },
+            },
+            {
+                displayName: 'Language',
+                name: 'language_videos',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'Language of the video (ISO 639-1 two-letter code)',
+                displayOptions: {
+                    show: {
+                        operation: ['getVideos'],
+                    },
+                },
+            },
+            {
+                displayName: 'Period',
+                name: 'period_videos',
+                type: 'options',
+                options: [
+                    { name: 'All', value: 'all' },
+                    { name: 'Day', value: 'day' },
+                    { name: 'Month', value: 'month' },
+                    { name: 'Week', value: 'week' },
+                ],
+                required: false,
+                default: 'all',
+                description: 'Period during which the video was created',
+                displayOptions: {
+                    show: {
+                        operation: ['getVideos'],
+                    },
+                },
+            },
+            {
+                displayName: 'Sort',
+                name: 'sort_videos',
+                type: 'options',
+                options: [
+                    { name: 'Time', value: 'time' },
+                    { name: 'Trending', value: 'trending' },
+                    { name: 'Views', value: 'views' },
+                ],
+                required: false,
+                default: 'time',
+                description: 'Sort order of the videos',
+                displayOptions: {
+                    show: {
+                        operation: ['getVideos'],
+                    },
+                },
+            },
+            {
+                displayName: 'Type',
+                name: 'type_videos',
+                type: 'options',
+                options: [
+                    { name: 'All', value: 'all' },
+                    { name: 'Archive', value: 'archive' },
+                    { name: 'Highlight', value: 'highlight' },
+                    { name: 'Upload', value: 'upload' },
+                ],
+                required: false,
+                default: 'all',
+                description: 'Type of video',
+                displayOptions: {
+                    show: {
+                        operation: ['getVideos'],
+                    },
+                },
+            },
+            {
+                displayName: 'First',
+                name: 'first_videos',
+                type: 'number',
+                typeOptions: { minValue: 1, maxValue: 100 },
+                required: false,
+                default: 20,
+                description: 'The maximum number of videos to return per page',
+                displayOptions: {
+                    show: {
+                        operation: ['getVideos'],
+                    },
+                },
+            },
+            {
+                displayName: 'After',
+                name: 'after_videos',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The cursor used to get the next page of results',
+                displayOptions: {
+                    show: {
+                        operation: ['getVideos'],
+                    },
+                },
+            },
+            {
+                displayName: 'Before',
+                name: 'before_videos',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The cursor used to get the previous page of results',
+                displayOptions: {
+                    show: {
+                        operation: ['getVideos'],
+                    },
+                },
+            },
+            {
+                displayName: 'Title',
+                name: 'title_videos',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The new title for the video',
+                displayOptions: {
+                    show: {
+                        operation: ['updateVideo'],
+                    },
+                },
+            },
+            {
+                displayName: 'Description',
+                name: 'description_videos',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The new description for the video',
+                displayOptions: {
+                    show: {
+                        operation: ['updateVideo'],
+                    },
+                },
+            },
+            {
+                displayName: 'Language',
+                name: 'language_update_videos',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The new language for the video (ISO 639-1 two-letter code)',
+                displayOptions: {
+                    show: {
+                        operation: ['updateVideo'],
+                    },
+                },
+            },
+            {
+                displayName: 'Broadcaster ID',
+                name: 'broadcaster_id_subscriptions',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the broadcaster whose subscriptions you want to get',
+                displayOptions: {
+                    show: {
+                        operation: ['getBroadcasterSubscriptions', 'checkUserSubscription'],
+                    },
+                },
+            },
+            {
+                displayName: 'User ID',
+                name: 'user_id_subscriptions',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The ID of the user to check subscription for (comma-separated for multiple)',
+                displayOptions: {
+                    show: {
+                        operation: ['getBroadcasterSubscriptions', 'checkUserSubscription'],
+                    },
+                },
+            },
+            {
+                displayName: 'First',
+                name: 'first_subscriptions',
+                type: 'number',
+                typeOptions: { minValue: 1, maxValue: 100 },
+                required: false,
+                default: 20,
+                description: 'The maximum number of subscriptions to return per page',
+                displayOptions: {
+                    show: {
+                        operation: ['getBroadcasterSubscriptions'],
+                    },
+                },
+            },
+            {
+                displayName: 'After',
+                name: 'after_subscriptions',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The cursor used to get the next page of results',
+                displayOptions: {
+                    show: {
+                        operation: ['getBroadcasterSubscriptions'],
+                    },
+                },
+            },
+            {
+                displayName: 'Broadcaster ID',
+                name: 'broadcaster_id_channel_points',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the broadcaster whose channel points you want to manage',
+                displayOptions: {
+                    show: {
+                        operation: ['getCustomReward', 'createCustomRewards', 'updateCustomReward', 'deleteCustomReward', 'getCustomRewardRedemption', 'updateRedemptionStatus'],
+                    },
+                },
+            },
+            {
+                displayName: 'Reward ID',
+                name: 'reward_id',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The ID of the custom reward',
+                displayOptions: {
+                    show: {
+                        operation: ['getCustomReward', 'updateCustomReward', 'deleteCustomReward', 'getCustomRewardRedemption', 'updateRedemptionStatus'],
+                    },
+                },
+            },
+            {
+                displayName: 'Redemption ID',
+                name: 'redemption_id',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The ID of the redemption',
+                displayOptions: {
+                    show: {
+                        operation: ['getCustomRewardRedemption', 'updateRedemptionStatus'],
+                    },
+                },
+            },
+            {
+                displayName: 'Reward Configuration',
+                name: 'reward_config',
+                type: 'json',
+                required: true,
+                default: '{}',
+                description: 'Custom reward configuration (JSON format)',
+                displayOptions: {
+                    show: {
+                        operation: ['createCustomRewards', 'updateCustomReward'],
+                    },
+                },
+            },
+            {
+                displayName: 'Status',
+                name: 'redemption_status',
+                type: 'options',
+                options: [
+                    { name: 'FULFILLED', value: 'FULFILLED' },
+                    { name: 'CANCELED', value: 'CANCELED' },
+                ],
+                required: true,
+                default: 'FULFILLED',
+                description: 'The new status of the redemption',
+                displayOptions: {
+                    show: {
+                        operation: ['updateRedemptionStatus'],
+                    },
+                },
+            },
+            {
+                displayName: 'First',
+                name: 'first_channel_points',
+                type: 'number',
+                typeOptions: { minValue: 1, maxValue: 50 },
+                required: false,
+                default: 20,
+                description: 'The maximum number of items to return per page',
+                displayOptions: {
+                    show: {
+                        operation: ['getCustomReward', 'getCustomRewardRedemption'],
+                    },
+                },
+            },
+            {
+                displayName: 'After',
+                name: 'after_channel_points',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The cursor used to get the next page of results',
+                displayOptions: {
+                    show: {
+                        operation: ['getCustomRewardRedemption'],
+                    },
+                },
+            },
+            {
                 displayName: 'Channel Name',
                 name: 'channel_name',
                 type: 'string',
@@ -2777,6 +3168,306 @@ export class Twitch implements INodeType {
 
                 if (response.data) {
                     returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'getVideos') {
+                const videoId = this.getNodeParameter('video_id', i) as string;
+                const userId = this.getNodeParameter('user_id_videos', i) as string;
+                const gameId = this.getNodeParameter('game_id_videos', i) as string;
+                const language = this.getNodeParameter('language_videos', i) as string;
+                const period = this.getNodeParameter('period_videos', i) as string;
+                const sort = this.getNodeParameter('sort_videos', i) as string;
+                const type = this.getNodeParameter('type_videos', i) as string;
+                const first = this.getNodeParameter('first_videos', i) as number;
+                const after = this.getNodeParameter('after_videos', i) as string;
+                const before = this.getNodeParameter('before_videos', i) as string;
+
+                const query: IDataObject = {};
+                if (videoId) query.id = videoId;
+                if (userId) query.user_id = userId;
+                if (gameId) query.game_id = gameId;
+                if (language) query.language = language;
+                if (period && period !== 'all') query.period = period;
+                if (sort) query.sort = sort;
+                if (type && type !== 'all') query.type = type;
+                if (first) query.first = first;
+                if (after) query.after = after;
+                if (before) query.before = before;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/videos',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'deleteVideos') {
+                const videoId = this.getNodeParameter('video_id', i) as string;
+
+                if (!videoId) {
+                    throw new NodeOperationError(this.getNode(), 'Video ID is required for deleting videos');
+                }
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'DELETE',
+                    '/videos',
+                    {},
+                    { id: videoId },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                } else if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'updateVideo') {
+                const videoId = this.getNodeParameter('video_id', i) as string;
+                const title = this.getNodeParameter('title_videos', i) as string;
+                const description = this.getNodeParameter('description_videos', i) as string;
+                const language = this.getNodeParameter('language_update_videos', i) as string;
+
+                if (!videoId) {
+                    throw new NodeOperationError(this.getNode(), 'Video ID is required for updating videos');
+                }
+
+                const body: IDataObject = {};
+                if (title) body.title = title;
+                if (description) body.description = description;
+                if (language) body.language = language;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'PUT',
+                    '/videos',
+                    body,
+                    { id: videoId },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                } else if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'getBroadcasterSubscriptions') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_subscriptions', i) as string;
+                const userId = this.getNodeParameter('user_id_subscriptions', i) as string;
+                const first = this.getNodeParameter('first_subscriptions', i) as number;
+                const after = this.getNodeParameter('after_subscriptions', i) as string;
+
+                const query: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                };
+                if (userId) query.user_id = userId;
+                if (first) query.first = first;
+                if (after) query.after = after;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/subscriptions',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'checkUserSubscription') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_subscriptions', i) as string;
+                const userId = this.getNodeParameter('user_id_subscriptions', i) as string;
+
+                if (!userId) {
+                    throw new NodeOperationError(this.getNode(), 'User ID is required for checking subscription');
+                }
+
+                const query: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                    user_id: userId,
+                };
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/subscriptions/user',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                } else if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'getCustomReward') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_channel_points', i) as string;
+                const rewardId = this.getNodeParameter('reward_id', i) as string;
+                const first = this.getNodeParameter('first_channel_points', i) as number;
+
+                const query: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                };
+                if (rewardId) query.id = rewardId;
+                if (first) query.first = first;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/channel_points/custom_rewards',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'createCustomRewards') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_channel_points', i) as string;
+                const rewardConfig = this.getNodeParameter('reward_config', i) as string;
+
+                let configData: IDataObject;
+                try {
+                    configData = JSON.parse(rewardConfig);
+                } catch (error) {
+                    throw new NodeOperationError(this.getNode(), 'Invalid JSON in reward configuration');
+                }
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'POST',
+                    '/channel_points/custom_rewards',
+                    configData,
+                    { broadcaster_id: broadcasterId },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'updateCustomReward') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_channel_points', i) as string;
+                const rewardId = this.getNodeParameter('reward_id', i) as string;
+                const rewardConfig = this.getNodeParameter('reward_config', i) as string;
+
+                if (!rewardId) {
+                    throw new NodeOperationError(this.getNode(), 'Reward ID is required for updating custom reward');
+                }
+
+                let configData: IDataObject;
+                try {
+                    configData = JSON.parse(rewardConfig);
+                } catch (error) {
+                    throw new NodeOperationError(this.getNode(), 'Invalid JSON in reward configuration');
+                }
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'PATCH',
+                    '/channel_points/custom_rewards',
+                    configData,
+                    { broadcaster_id: broadcasterId, id: rewardId },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'deleteCustomReward') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_channel_points', i) as string;
+                const rewardId = this.getNodeParameter('reward_id', i) as string;
+
+                if (!rewardId) {
+                    throw new NodeOperationError(this.getNode(), 'Reward ID is required for deleting custom reward');
+                }
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'DELETE',
+                    '/channel_points/custom_rewards',
+                    {},
+                    { broadcaster_id: broadcasterId, id: rewardId },
+                );
+
+                if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'getCustomRewardRedemption') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_channel_points', i) as string;
+                const rewardId = this.getNodeParameter('reward_id', i) as string;
+                const redemptionId = this.getNodeParameter('redemption_id', i) as string;
+                const first = this.getNodeParameter('first_channel_points', i) as number;
+                const after = this.getNodeParameter('after_channel_points', i) as string;
+
+                if (!rewardId) {
+                    throw new NodeOperationError(this.getNode(), 'Reward ID is required for getting redemptions');
+                }
+
+                const query: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                    reward_id: rewardId,
+                };
+                if (redemptionId) query.id = redemptionId;
+                if (first) query.first = first;
+                if (after) query.after = after;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/channel_points/custom_rewards/redemptions',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'updateRedemptionStatus') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_channel_points', i) as string;
+                const rewardId = this.getNodeParameter('reward_id', i) as string;
+                const redemptionId = this.getNodeParameter('redemption_id', i) as string;
+                const status = this.getNodeParameter('redemption_status', i) as string;
+
+                if (!rewardId || !redemptionId) {
+                    throw new NodeOperationError(this.getNode(), 'Reward ID and Redemption ID are required for updating redemption status');
+                }
+
+                const body: IDataObject = {
+                    status: status,
+                };
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'PATCH',
+                    '/channel_points/custom_rewards/redemptions',
+                    body,
+                    { broadcaster_id: broadcasterId, reward_id: rewardId, id: redemptionId },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
                 }
             }
 
