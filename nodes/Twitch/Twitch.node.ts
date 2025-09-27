@@ -156,6 +156,11 @@ export class Twitch implements INodeType {
                         action: 'Get clips',
                     },
                     {
+                        name: 'Clips - Get Clips Downloads',
+                        value: 'getClipsDownloads',
+                        action: 'Get clips downloads',
+                    },
+                    {
                         name: 'Games - Get Game Details',
                         value: 'getGameDetails',
                         action: 'Get game details',
@@ -1179,6 +1184,19 @@ export class Twitch implements INodeType {
                 displayOptions: {
                     show: {
                         operation: ['getClips'],
+                    },
+                },
+            },
+            {
+                displayName: 'Clip ID',
+                name: 'clip_id_downloads',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'ID of the clip to get download URLs for',
+                displayOptions: {
+                    show: {
+                        operation: ['getClipsDownloads'],
                     },
                 },
             },
@@ -2993,6 +3011,28 @@ export class Twitch implements INodeType {
 
                 if (Array.isArray(response.data)) {
                     returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getClipsDownloads') {
+                const clipId = this.getNodeParameter('clip_id_downloads', i) as string;
+
+                if (!clipId) {
+                    throw new NodeOperationError(this.getNode(), 'Clip ID is required for getting clip downloads');
+                }
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/clips/download',
+                    {},
+                    { id: clipId },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                } else if (response.data) {
+                    returnData.push(response.data);
                 }
             }
 
