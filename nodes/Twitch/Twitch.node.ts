@@ -1188,12 +1188,38 @@ export class Twitch implements INodeType {
                 },
             },
             {
+                displayName: 'Editor ID',
+                name: 'editor_id',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The User ID of the editor for the channel you want to download a clip for. If using the broadcaster\'s auth token, this is the same as broadcaster_id.',
+                displayOptions: {
+                    show: {
+                        operation: ['getClipsDownloads'],
+                    },
+                },
+            },
+            {
+                displayName: 'Broadcaster ID',
+                name: 'broadcaster_id_downloads',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the broadcaster you want to download clips for',
+                displayOptions: {
+                    show: {
+                        operation: ['getClipsDownloads'],
+                    },
+                },
+            },
+            {
                 displayName: 'Clip ID',
                 name: 'clip_id_downloads',
                 type: 'string',
                 required: true,
                 default: '',
-                description: 'ID of the clip to get download URLs for',
+                description: 'The ID that identifies the clip you want to download. Include this parameter for each clip you want to download, up to a maximum of 10 clips.',
                 displayOptions: {
                     show: {
                         operation: ['getClipsDownloads'],
@@ -3015,18 +3041,24 @@ export class Twitch implements INodeType {
             }
 
             if (operation === 'getClipsDownloads') {
+                const editorId = this.getNodeParameter('editor_id', i) as string;
+                const broadcasterId = this.getNodeParameter('broadcaster_id_downloads', i) as string;
                 const clipId = this.getNodeParameter('clip_id_downloads', i) as string;
 
-                if (!clipId) {
-                    throw new NodeOperationError(this.getNode(), 'Clip ID is required for getting clip downloads');
+                if (!editorId || !broadcasterId || !clipId) {
+                    throw new NodeOperationError(this.getNode(), 'Editor ID, Broadcaster ID, and Clip ID are required for getting clip downloads');
                 }
 
                 const response = await twitchApiRequest.call(
                     this,
                     'GET',
-                    '/clips/download',
+                    '/clips/downloads',
                     {},
-                    { id: clipId },
+                    { 
+                        editor_id: editorId,
+                        broadcaster_id: broadcasterId,
+                        clip_id: clipId 
+                    },
                 );
 
                 if (Array.isArray(response.data)) {
