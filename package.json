@@ -1,7 +1,7 @@
 {
-  "name": "@codelytv/n8n-nodes-twitch",
-  "version": "1.8.0",
-  "description": "n8n node for Twitch: Execute workflows on stream start, stream end, and new follows.",
+  "name": "@galygious/n8n-nodes-twitch-comprehensive",
+  "version": "2.0.0",
+  "description": "Comprehensive n8n node for Twitch API with full coverage including Schedule, Streams, Analytics, Bits, Chat, and Clips endpoints.",
   "keywords": [
     "n8n",
     "n8n-node",
@@ -14,9 +14,9 @@
     "codelytv"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/codelytv/n8n-nodes-twitch#readme",
+  "homepage": "https://github.com/Galygious/n8n-nodes-twitch-comprehensive#readme",
   "bugs": {
-    "url": "https://github.com/codelytv/n8n-nodes-twitch/issues"
+    "url": "https://github.com/Galygious/n8n-nodes-twitch-comprehensive/issues"
   },
   "author": {
     "name": "CodelyTV",
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/CodelyTV/n8n-nodes-twitch"
+    "url": "https://github.com/Galygious/n8n-nodes-twitch-comprehensive"
   },
   "type": "module",
   "engines": {
