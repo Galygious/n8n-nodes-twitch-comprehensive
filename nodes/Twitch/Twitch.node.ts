@@ -61,7 +61,7 @@ export class Twitch implements INodeType {
                         action: 'Get extension transactions',
                     },
                     {
-                        name: 'Block User',
+                        name: 'Users - Block User',
                         value: 'blockUser',
                         action: 'Block user',
                     },
@@ -146,27 +146,27 @@ export class Twitch implements INodeType {
                         action: 'Search categories',
                     },
                     {
-                        name: 'Get User Active Extensions',
+                        name: 'Users - Get User Active Extensions',
                         value: 'getUserActiveExtensions',
                         action: 'Get user active extensions',
                     },
                     {
-                        name: 'Get User Block List',
+                        name: 'Users - Get User Block List',
                         value: 'getUserBlockList',
                         action: 'Get user block list',
                     },
                     {
-                        name: 'Get User Extensions',
+                        name: 'Users - Get User Extensions',
                         value: 'getUserExtensions',
                         action: 'Get user extensions',
                     },
                     {
-                        name: 'Get Users',
+                        name: 'Users - Get Users',
                         value: 'getUsers',
                         action: 'Get users',
                     },
                     {
-                        name: 'Get Users Follows',
+                        name: 'Users - Get Users Follows',
                         value: 'getUsersFollows',
                         action: 'Get users follows',
                     },
@@ -226,17 +226,17 @@ export class Twitch implements INodeType {
                         action: 'Search channels',
                     },
                     {
-                        name: 'Unblock User',
+                        name: 'Users - Unblock User',
                         value: 'unblockUser',
                         action: 'Unblock user',
                     },
                     {
-                        name: 'Update User',
+                        name: 'Users - Update User',
                         value: 'updateUser',
                         action: 'Update user',
                     },
                     {
-                        name: 'Update User Extensions',
+                        name: 'Users - Update User Extensions',
                         value: 'updateUserExtensions',
                         action: 'Update user extensions',
                     },
