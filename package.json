@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Galygious/n8n-nodes-twitch-comprehensive"
+    "url": "git+https://github.com/Galygious/n8n-nodes-twitch-comprehensive.git"
   },
   "type": "module",
   "engines": {
