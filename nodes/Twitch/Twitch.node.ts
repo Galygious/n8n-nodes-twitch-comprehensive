@@ -3,6 +3,7 @@ import {
     IExecuteFunctions,
     INodeType,
     INodeTypeDescription,
+    NodeOperationError,
 } from 'n8n-workflow';
 
 import { twitchApiRequest } from './GenericFunctions.js';
@@ -35,29 +36,34 @@ export class Twitch implements INodeType {
                 default: 'getChannelStreams',
                 options: [
                     {
-                        name: 'Schedule - Create Channel Stream Schedule Segment',
-                        value: 'createChannelStreamScheduleSegment',
-                        action: 'Create channel stream schedule segment',
+                        name: 'Analytics - Get Extension Analytics',
+                        value: 'getExtensionAnalytics',
+                        action: 'Get extension analytics',
                     },
                     {
-                        name: 'Clips - Create Clip',
-                        value: 'createClip',
-                        action: 'Create clip',
-                    },
-                    {
-                        name: 'Streams - Create Stream Marker',
-                        value: 'createStreamMarker',
-                        action: 'Create stream marker',
-                    },
-                    {
-                        name: 'Schedule - Delete Channel Stream Schedule Segment',
-                        value: 'deleteChannelStreamScheduleSegment',
-                        action: 'Delete channel stream schedule segment',
+                        name: 'Analytics - Get Game Analytics',
+                        value: 'getGameAnalytics',
+                        action: 'Get game analytics',
                     },
                     {
                         name: 'Bits - Get Bits Leaderboard',
                         value: 'getBitsLeaderboard',
                         action: 'Get bits leaderboard',
+                    },
+                    {
+                        name: 'Bits - Get Cheermotes',
+                        value: 'getCheermotes',
+                        action: 'Get cheermotes',
+                    },
+                    {
+                        name: 'Bits - Get Extension Transactions',
+                        value: 'getExtensionTransactions',
+                        action: 'Get extension transactions',
+                    },
+                    {
+                        name: 'Block User',
+                        value: 'blockUser',
+                        action: 'Block user',
                     },
                     {
                         name: 'Chat - Get Channel Chat Badges',
@@ -70,16 +76,6 @@ export class Twitch implements INodeType {
                         action: 'Get channel emotes',
                     },
                     {
-                        name: 'Schedule - Get Channel Stream Schedule',
-                        value: 'getChannelStreamSchedule',
-                        action: 'Get channel stream schedule',
-                    },
-                    {
-                        name: 'Streams - Get Channel Streams',
-                        value: 'getChannelStreams',
-                        action: 'Get channel streams',
-                    },
-                    {
                         name: 'Chat - Get Chat Settings',
                         value: 'getChatSettings',
                         action: 'Get chat settings',
@@ -90,44 +86,9 @@ export class Twitch implements INodeType {
                         action: 'Get chatters',
                     },
                     {
-                        name: 'Bits - Get Cheermotes',
-                        value: 'getCheermotes',
-                        action: 'Get cheermotes',
-                    },
-                    {
-                        name: 'Clips - Get Clips',
-                        value: 'getClips',
-                        action: 'Get clips',
-                    },
-                    {
                         name: 'Chat - Get Emote Sets',
                         value: 'getEmoteSets',
                         action: 'Get emote sets',
-                    },
-                    {
-                        name: 'Analytics - Get Extension Analytics',
-                        value: 'getExtensionAnalytics',
-                        action: 'Get extension analytics',
-                    },
-                    {
-                        name: 'Bits - Get Extension Transactions',
-                        value: 'getExtensionTransactions',
-                        action: 'Get extension transactions',
-                    },
-                    {
-                        name: 'Streams - Get Followed Streams',
-                        value: 'getFollowedStreams',
-                        action: 'Get followed streams',
-                    },
-                    {
-                        name: 'Analytics - Get Game Analytics',
-                        value: 'getGameAnalytics',
-                        action: 'Get game analytics',
-                    },
-                    {
-                        name: 'Games - Get Game Details',
-                        value: 'getGameDetails',
-                        action: 'Get game details',
                     },
                     {
                         name: 'Chat - Get Global Chat Badges',
@@ -140,14 +101,39 @@ export class Twitch implements INodeType {
                         action: 'Get global emotes',
                     },
                     {
-                        name: 'Streams - Get Stream Markers',
-                        value: 'getStreamMarkers',
-                        action: 'Get stream markers',
+                        name: 'Chat - Get User Chat Color',
+                        value: 'getUserChatColor',
+                        action: 'Get user chat color',
                     },
                     {
-                        name: 'Streams - Get Streams',
-                        value: 'getStreams',
-                        action: 'Get streams',
+                        name: 'Chat - Send Chat Announcement',
+                        value: 'sendChatAnnouncement',
+                        action: 'Send chat announcement',
+                    },
+                    {
+                        name: 'Chat - Update Chat Settings',
+                        value: 'updateChatSettings',
+                        action: 'Update chat settings',
+                    },
+                    {
+                        name: 'Chat - Update User Chat Color',
+                        value: 'updateUserChatColor',
+                        action: 'Update user chat color',
+                    },
+                    {
+                        name: 'Clips - Create Clip',
+                        value: 'createClip',
+                        action: 'Create clip',
+                    },
+                    {
+                        name: 'Clips - Get Clips',
+                        value: 'getClips',
+                        action: 'Get clips',
+                    },
+                    {
+                        name: 'Games - Get Game Details',
+                        value: 'getGameDetails',
+                        action: 'Get game details',
                     },
                     {
                         name: 'Games - Get Top Games',
@@ -155,9 +141,24 @@ export class Twitch implements INodeType {
                         action: 'Get top games',
                     },
                     {
-                        name: 'Chat - Get User Chat Color',
-                        value: 'getUserChatColor',
-                        action: 'Get user chat color',
+                        name: 'Games - Search Categories',
+                        value: 'searchCategories',
+                        action: 'Search categories',
+                    },
+                    {
+                        name: 'Get User Active Extensions',
+                        value: 'getUserActiveExtensions',
+                        action: 'Get user active extensions',
+                    },
+                    {
+                        name: 'Get User Block List',
+                        value: 'getUserBlockList',
+                        action: 'Get user block list',
+                    },
+                    {
+                        name: 'Get User Extensions',
+                        value: 'getUserExtensions',
+                        action: 'Get user extensions',
                     },
                     {
                         name: 'Get Users',
@@ -170,49 +171,19 @@ export class Twitch implements INodeType {
                         action: 'Get users follows',
                     },
                     {
-                        name: 'Get User Block List',
-                        value: 'getUserBlockList',
-                        action: 'Get user block list',
+                        name: 'Schedule - Create Channel Stream Schedule Segment',
+                        value: 'createChannelStreamScheduleSegment',
+                        action: 'Create channel stream schedule segment',
                     },
                     {
-                        name: 'Block User',
-                        value: 'blockUser',
-                        action: 'Block user',
+                        name: 'Schedule - Delete Channel Stream Schedule Segment',
+                        value: 'deleteChannelStreamScheduleSegment',
+                        action: 'Delete channel stream schedule segment',
                     },
                     {
-                        name: 'Unblock User',
-                        value: 'unblockUser',
-                        action: 'Unblock user',
-                    },
-                    {
-                        name: 'Get User Extensions',
-                        value: 'getUserExtensions',
-                        action: 'Get user extensions',
-                    },
-                    {
-                        name: 'Get User Active Extensions',
-                        value: 'getUserActiveExtensions',
-                        action: 'Get user active extensions',
-                    },
-                    {
-                        name: 'Update User Extensions',
-                        value: 'updateUserExtensions',
-                        action: 'Update user extensions',
-                    },
-                    {
-                        name: 'Games - Search Categories',
-                        value: 'searchCategories',
-                        action: 'Search categories',
-                    },
-                    {
-                        name: 'Streams - Search Channels',
-                        value: 'searchChannels',
-                        action: 'Search channels',
-                    },
-                    {
-                        name: 'Chat - Send Chat Announcement',
-                        value: 'sendChatAnnouncement',
-                        action: 'Send chat announcement',
+                        name: 'Schedule - Get Channel Stream Schedule',
+                        value: 'getChannelStreamSchedule',
+                        action: 'Get channel stream schedule',
                     },
                     {
                         name: 'Schedule - Update Channel Stream Schedule',
@@ -225,9 +196,39 @@ export class Twitch implements INodeType {
                         action: 'Update channel stream schedule segment',
                     },
                     {
-                        name: 'Chat - Update Chat Settings',
-                        value: 'updateChatSettings',
-                        action: 'Update chat settings',
+                        name: 'Streams - Create Stream Marker',
+                        value: 'createStreamMarker',
+                        action: 'Create stream marker',
+                    },
+                    {
+                        name: 'Streams - Get Channel Streams',
+                        value: 'getChannelStreams',
+                        action: 'Get channel streams',
+                    },
+                    {
+                        name: 'Streams - Get Followed Streams',
+                        value: 'getFollowedStreams',
+                        action: 'Get followed streams',
+                    },
+                    {
+                        name: 'Streams - Get Stream Markers',
+                        value: 'getStreamMarkers',
+                        action: 'Get stream markers',
+                    },
+                    {
+                        name: 'Streams - Get Streams',
+                        value: 'getStreams',
+                        action: 'Get streams',
+                    },
+                    {
+                        name: 'Streams - Search Channels',
+                        value: 'searchChannels',
+                        action: 'Search channels',
+                    },
+                    {
+                        name: 'Unblock User',
+                        value: 'unblockUser',
+                        action: 'Unblock user',
                     },
                     {
                         name: 'Update User',
@@ -235,9 +236,9 @@ export class Twitch implements INodeType {
                         action: 'Update user',
                     },
                     {
-                        name: 'Chat - Update User Chat Color',
-                        value: 'updateUserChatColor',
-                        action: 'Update user chat color',
+                        name: 'Update User Extensions',
+                        value: 'updateUserExtensions',
+                        action: 'Update user extensions',
                     },
                 ],
             },
@@ -1220,7 +1221,7 @@ export class Twitch implements INodeType {
                 name: 'first_blocks',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 100 },
-                required: false,
+
                 default: 20,
                 description: 'The maximum number of items to return per page',
                 displayOptions: {
@@ -1233,7 +1234,7 @@ export class Twitch implements INodeType {
                 displayName: 'After',
                 name: 'after_blocks',
                 type: 'string',
-                required: false,
+
                 default: '',
                 description: 'The cursor used to get the next page of results',
                 displayOptions: {
@@ -1269,7 +1270,7 @@ export class Twitch implements INodeType {
                         value: 'whisper',
                     },
                 ],
-                required: false,
+
                 default: 'chat',
                 description: 'Source context for blocking the user',
                 displayOptions: {
@@ -1296,7 +1297,7 @@ export class Twitch implements INodeType {
                         value: 'other',
                     },
                 ],
-                required: false,
+
                 default: 'other',
                 description: 'Reason for blocking the user',
                 displayOptions: {
@@ -1344,7 +1345,7 @@ export class Twitch implements INodeType {
                         value: 'overlay',
                     },
                 ],
-                required: false,
+
                 default: '',
                 description: 'Type of extension to retrieve',
                 displayOptions: {
@@ -2336,7 +2337,7 @@ export class Twitch implements INodeType {
                 try {
                     configData = JSON.parse(extensionConfig);
                 } catch (error) {
-                    throw new Error('Invalid JSON in extension configuration');
+                    throw new NodeOperationError(this.getNode(), 'Invalid JSON in extension configuration');
                 }
 
                 const response = await twitchApiRequest.call(
