@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-twitch-comprehensive",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Comprehensive n8n node for Twitch API with full coverage including Schedule, Streams, Analytics, Bits, Chat, and Clips endpoints.",
   "keywords": [
     "n8n",
