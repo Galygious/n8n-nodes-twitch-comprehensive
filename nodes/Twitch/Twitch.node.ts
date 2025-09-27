@@ -240,6 +240,61 @@ export class Twitch implements INodeType {
                         value: 'updateUserExtensions',
                         action: 'Update user extensions',
                     },
+                    {
+                        name: 'Moderation - Get Banned Users',
+                        value: 'getBannedUsers',
+                        action: 'Get banned users',
+                    },
+                    {
+                        name: 'Moderation - Ban User',
+                        value: 'banUser',
+                        action: 'Ban user',
+                    },
+                    {
+                        name: 'Moderation - Unban User',
+                        value: 'unbanUser',
+                        action: 'Unban user',
+                    },
+                    {
+                        name: 'Moderation - Get Moderators',
+                        value: 'getModerators',
+                        action: 'Get moderators',
+                    },
+                    {
+                        name: 'Moderation - Add Channel Moderator',
+                        value: 'addChannelModerator',
+                        action: 'Add channel moderator',
+                    },
+                    {
+                        name: 'Moderation - Remove Channel Moderator',
+                        value: 'removeChannelModerator',
+                        action: 'Remove channel moderator',
+                    },
+                    {
+                        name: 'Moderation - Get AutoMod Settings',
+                        value: 'getAutoModSettings',
+                        action: 'Get automod settings',
+                    },
+                    {
+                        name: 'Moderation - Update AutoMod Settings',
+                        value: 'updateAutoModSettings',
+                        action: 'Update automod settings',
+                    },
+                    {
+                        name: 'Moderation - Get Blocked Terms',
+                        value: 'getBlockedTerms',
+                        action: 'Get blocked terms',
+                    },
+                    {
+                        name: 'Moderation - Add Blocked Term',
+                        value: 'addBlockedTerm',
+                        action: 'Add blocked term',
+                    },
+                    {
+                        name: 'Moderation - Remove Blocked Term',
+                        value: 'removeBlockedTerm',
+                        action: 'Remove blocked term',
+                    },
                 ],
             },
             {
@@ -1368,6 +1423,124 @@ export class Twitch implements INodeType {
                 },
             },
             {
+                displayName: 'Broadcaster ID',
+                name: 'broadcaster_id_moderation',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the broadcaster whose channel you want to moderate',
+                displayOptions: {
+                    show: {
+                        operation: ['getBannedUsers', 'banUser', 'unbanUser', 'getModerators', 'addChannelModerator', 'removeChannelModerator', 'getAutoModSettings', 'updateAutoModSettings', 'getBlockedTerms', 'addBlockedTerm', 'removeBlockedTerm'],
+                    },
+                },
+            },
+            {
+                displayName: 'User ID',
+                name: 'user_id_moderation',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the user to ban/unban/moderate',
+                displayOptions: {
+                    show: {
+                        operation: ['banUser', 'unbanUser', 'addChannelModerator', 'removeChannelModerator'],
+                    },
+                },
+            },
+            {
+                displayName: 'Reason',
+                name: 'reason_moderation',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The reason for the ban',
+                displayOptions: {
+                    show: {
+                        operation: ['banUser'],
+                    },
+                },
+            },
+            {
+                displayName: 'Duration',
+                name: 'duration',
+                type: 'number',
+                required: false,
+                default: 0,
+                description: 'Duration of the timeout in seconds (0 for permanent ban)',
+                displayOptions: {
+                    show: {
+                        operation: ['banUser'],
+                    },
+                },
+            },
+            {
+                displayName: 'First',
+                name: 'first_moderation',
+                type: 'number',
+                typeOptions: { minValue: 1, maxValue: 100 },
+                required: false,
+                default: 20,
+                description: 'The maximum number of items to return per page',
+                displayOptions: {
+                    show: {
+                        operation: ['getBannedUsers', 'getModerators', 'getBlockedTerms'],
+                    },
+                },
+            },
+            {
+                displayName: 'After',
+                name: 'after_moderation',
+                type: 'string',
+                required: false,
+                default: '',
+                description: 'The cursor used to get the next page of results',
+                displayOptions: {
+                    show: {
+                        operation: ['getBannedUsers', 'getModerators', 'getBlockedTerms'],
+                    },
+                },
+            },
+            {
+                displayName: 'AutoMod Settings',
+                name: 'automod_settings',
+                type: 'json',
+                required: true,
+                default: '{}',
+                description: 'AutoMod settings (JSON format)',
+                displayOptions: {
+                    show: {
+                        operation: ['updateAutoModSettings'],
+                    },
+                },
+            },
+            {
+                displayName: 'Blocked Term',
+                name: 'blocked_term',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The term to block',
+                displayOptions: {
+                    show: {
+                        operation: ['addBlockedTerm'],
+                    },
+                },
+            },
+            {
+                displayName: 'Term ID',
+                name: 'term_id',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the blocked term to remove',
+                displayOptions: {
+                    show: {
+                        operation: ['removeBlockedTerm'],
+                    },
+                },
+            },
+            {
                 displayName: 'Channel Name',
                 name: 'channel_name',
                 type: 'string',
@@ -2349,6 +2522,261 @@ export class Twitch implements INodeType {
 
                 if (Array.isArray(response.data)) {
                     returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getBannedUsers') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+                const first = this.getNodeParameter('first_moderation', i) as number;
+                const after = this.getNodeParameter('after_moderation', i) as string;
+
+                const query: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                };
+                if (first) query.first = first;
+                if (after) query.after = after;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/moderation/banned',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'banUser') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+                const userId = this.getNodeParameter('user_id_moderation', i) as string;
+                const reason = this.getNodeParameter('reason_moderation', i) as string;
+                const duration = this.getNodeParameter('duration', i) as number;
+
+                const bodyData: IDataObject = {
+                    user_id: userId,
+                };
+
+                if (reason) bodyData.reason = reason;
+                if (duration > 0) bodyData.duration = duration;
+
+                const body: IDataObject = {
+                    data: bodyData,
+                };
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'POST',
+                    '/moderation/bans',
+                    body,
+                    { broadcaster_id: broadcasterId, moderator_id: broadcasterId },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'unbanUser') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+                const userId = this.getNodeParameter('user_id_moderation', i) as string;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'DELETE',
+                    '/moderation/bans',
+                    {},
+                    { 
+                        broadcaster_id: broadcasterId, 
+                        moderator_id: broadcasterId,
+                        user_id: userId 
+                    },
+                );
+
+                if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'getModerators') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+                const first = this.getNodeParameter('first_moderation', i) as number;
+                const after = this.getNodeParameter('after_moderation', i) as string;
+
+                const query: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                };
+                if (first) query.first = first;
+                if (after) query.after = after;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/moderation/moderators',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'addChannelModerator') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+                const userId = this.getNodeParameter('user_id_moderation', i) as string;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'POST',
+                    '/moderation/moderators',
+                    {},
+                    { 
+                        broadcaster_id: broadcasterId,
+                        user_id: userId 
+                    },
+                );
+
+                if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'removeChannelModerator') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+                const userId = this.getNodeParameter('user_id_moderation', i) as string;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'DELETE',
+                    '/moderation/moderators',
+                    {},
+                    { 
+                        broadcaster_id: broadcasterId,
+                        user_id: userId 
+                    },
+                );
+
+                if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'getAutoModSettings') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/moderation/automod/settings',
+                    {},
+                    { 
+                        broadcaster_id: broadcasterId,
+                        moderator_id: broadcasterId 
+                    },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'updateAutoModSettings') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+                const automodSettings = this.getNodeParameter('automod_settings', i) as string;
+
+                let settingsData: IDataObject;
+                try {
+                    settingsData = JSON.parse(automodSettings);
+                } catch (error) {
+                    throw new NodeOperationError(this.getNode(), 'Invalid JSON in automod settings');
+                }
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'PUT',
+                    '/moderation/automod/settings',
+                    settingsData,
+                    { 
+                        broadcaster_id: broadcasterId,
+                        moderator_id: broadcasterId 
+                    },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'getBlockedTerms') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+                const first = this.getNodeParameter('first_moderation', i) as number;
+                const after = this.getNodeParameter('after_moderation', i) as string;
+
+                const query: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                    moderator_id: broadcasterId,
+                };
+                if (first) query.first = first;
+                if (after) query.after = after;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/moderation/blocked_terms',
+                    {},
+                    query,
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'addBlockedTerm') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+                const blockedTerm = this.getNodeParameter('blocked_term', i) as string;
+
+                const body: IDataObject = {
+                    text: blockedTerm,
+                };
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'POST',
+                    '/moderation/blocked_terms',
+                    body,
+                    { 
+                        broadcaster_id: broadcasterId,
+                        moderator_id: broadcasterId 
+                    },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'removeBlockedTerm') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_moderation', i) as string;
+                const termId = this.getNodeParameter('term_id', i) as string;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'DELETE',
+                    '/moderation/blocked_terms',
+                    {},
+                    { 
+                        broadcaster_id: broadcasterId,
+                        moderator_id: broadcasterId,
+                        id: termId 
+                    },
+                );
+
+                if (response.data) {
+                    returnData.push(response.data);
                 }
             }
 
