@@ -1,0 +1,66 @@
+---
+alwaysApply: true
+---
+
+# Codely Code Quality Standards
+
+This project follows Codely's commitment to high-quality, maintainable code.
+
+## Quality Commitments
+
+### Semantic Versioning
+- **No breaking changes** in patch or minor versions
+- Follow SemVer strictly for all releases
+- Document breaking changes clearly in changelog
+
+### Minimal Dependencies
+- Use **bare minimum dependencies** needed for functionality
+- Avoid unnecessary transitive dependencies
+- Keep package size small and focused
+
+### Single Purpose
+- **One specific purpose**: Twitch integration for n8n
+- Avoid feature creep and scope expansion
+- Maintain focused, clear functionality
+
+### Documentation
+- **Well documented README** with installation and usage instructions
+- Clear setup guides for different deployment scenarios
+- Comprehensive API documentation and examples
+
+### Open Source License
+- **MIT License** favoring open source collaboration
+- Encourage community contributions
+- Maintain transparency in development
+
+## Code Standards
+
+### TypeScript Best Practices
+- Strict type checking enabled
+- No implicit any types
+- Proper error handling with typed exceptions
+- Clean, readable code structure
+
+### n8n Node Conventions
+- Follow n8n's community node standards
+- Proper credential handling and validation
+- Consistent parameter naming and descriptions
+- Webhook implementation best practices
+
+### Testing and Quality Assurance
+- Local testing with n8n integration
+- Credential validation and error handling
+- Webhook reliability and challenge handling
+- API rate limiting considerations
+
+## Project Structure
+- Clear separation of concerns
+- Modular code organization
+- Shared utilities in GenericFunctions
+- Proper build and deployment processes
+
+## Community Standards
+- Responsive to issues and feature requests
+- Clear contribution guidelines
+- Regular updates and maintenance
+- Professional support and documentation

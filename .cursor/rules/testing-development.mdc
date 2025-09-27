@@ -1,0 +1,130 @@
+---
+description: Testing and development workflow for n8n Twitch node
+---
+
+# Testing and Development Workflow
+
+This guide covers local development, testing, and deployment of the n8n Twitch node.
+
+## Development Setup
+
+### Prerequisites
+- Node.js >= 20.0.0
+- npm >= 10.0.0
+- n8n installed globally or locally
+
+### Local Development Process
+1. Clone and navigate to project directory
+2. Install dependencies: `npm install`
+3. Build the node: `npm run build`
+4. Create global symlink: `npm link`
+5. Link in n8n custom nodes directory
+6. Run n8n: `n8n start`
+
+### Build Commands
+- `npm run build`: Compile TypeScript and copy icons
+- `npm run dev`: Watch mode for TypeScript compilation
+- `npm run format`: Format code with Prettier
+- `npm run lint`: Run ESLint checks
+- `npm run lintfix`: Fix ESLint issues automatically
+
+## Local Testing
+
+### n8n Integration Testing
+1. Install n8n globally: `npm install n8n -g`
+2. Navigate to n8n directory: `cd ~/.n8n/`
+3. Create custom nodes folder: `mkdir custom && cd custom`
+4. Link the node: `npm link @codelytv/n8n-nodes-twitch`
+5. Verify symlink: `tree -L 3 -d`
+6. Start n8n: `n8n start`
+
+### Expected Directory Structure
+```
+.n8n/
+└── custom/
+    └── node_modules/
+        └── @codelytv/
+            └── n8n-nodes-twitch -> ../../../../path/to/n8n-nodes-twitch
+```
+
+## Credential Testing
+
+### Twitch API Credentials
+1. Create Twitch application at https://dev.twitch.tv/console/apps
+2. Get Client ID and Client Secret
+3. Configure in n8n credentials
+4. Test authentication using credential test function
+
+### Webhook Testing
+- Use tools like ngrok for local webhook testing
+- Twitch requires HTTPS for webhook callbacks
+- Test webhook challenge response handling
+- Verify webhook creation and deletion
+
+## Code Quality Standards
+
+### ESLint Configuration
+- TypeScript-specific rules from `@typescript-eslint`
+- n8n node conventions from `eslint-plugin-n8n-nodes-base`
+- JSON formatting rules for package.json
+- Strict error handling for production code
+
+### Code Formatting
+- Prettier for consistent code formatting
+- Target: `nodes credentials` directories
+- Run before commits: `npm run format`
+
+### TypeScript Compilation
+- Strict mode enabled
+- No implicit any
+- Source maps for debugging
+- Declaration files for type checking
+
+## Deployment Options
+
+### Self-Hosted n8n
+1. **GUI Installation**: Install via n8n interface
+2. **npm Package**: `npm i @codelytv/n8n-nodes-twitch`
+3. **Docker Custom Image**: Build custom n8n image
+4. **Docker Volume**: Map custom nodes directory
+
+### Production Considerations
+- Use HTTPS for webhook callbacks
+- Implement proper error handling
+- Monitor API rate limits
+- Consider webhook secret validation
+- Test webhook reliability and retry logic
+
+## Debugging
+
+### Common Issues
+- Webhook URL not accessible from Twitch
+- Invalid credentials or expired tokens
+- Rate limiting from Twitch API
+- Webhook challenge validation failures
+
+### Debug Tools
+- n8n workflow execution logs
+- Browser developer tools for webhook testing
+- Twitch Developer Console for API monitoring
+- Network inspection for API calls
+
+## Version Management
+
+### Semantic Versioning
+- Follow SemVer for releases
+- No breaking changes in patch/minor versions
+- Update version in package.json
+- Use release-please for automated releases
+
+### Changelog
+- Document all changes in [CHANGELOG.md](mdc:CHANGELOG.md)
+- Include breaking changes, new features, and bug fixes
+- Follow conventional commit format
+
+## Package Publishing
+- Build before publishing: `npm run build`
+- Verify dist/ directory contains compiled files
+- Test package installation locally
+- Publish to npm registry
+- Update n8n community nodes registry
