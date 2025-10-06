@@ -5,7 +5,7 @@ import {
 
 export class TwitchOAuth2Api implements ICredentialType {
     name = 'twitchOAuth2Api';
-    displayName = 'Twitch OAuth2 API';
+    displayName = 'Twitch API (User Access Token)';
     documentationUrl = 'https://dev.twitch.tv/docs/authentication/';
     extends = ['oAuth2Api'];
     properties: INodeProperties[] = [
