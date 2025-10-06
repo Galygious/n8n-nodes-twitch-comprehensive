@@ -39,6 +39,96 @@ export async function twitchApiRequest(
 			const selected = (this as unknown as { getNodeParameter?: (name: string, index?: number) => unknown }).getNodeParameter?.('authentication', 0) as string | undefined;
 			if (selected === 'user' || selected === 'app') authMode = selected;
 		} catch {}
+
+		// Auto-select for known endpoints when not explicitly overridden
+		const normalizedResource = resource.toLowerCase();
+		const httpMethod = (method || 'GET').toUpperCase();
+		// EventSub requires app access token
+		if (normalizedResource.startsWith('/eventsub/')) {
+			authMode = 'app';
+		}
+		// Streams
+		if (normalizedResource === '/streams/followed') {
+			authMode = 'user';
+		}
+		// Clips
+		if (normalizedResource === '/clips' && httpMethod === 'POST') {
+			authMode = 'user';
+		}
+		// Schedule mutations require user token
+		if (
+			(normalizedResource === '/schedule/settings' && httpMethod === 'PATCH') ||
+			(normalizedResource === '/schedule/segment' && (httpMethod === 'POST' || httpMethod === 'PATCH' || httpMethod === 'DELETE'))
+		) {
+			authMode = 'user';
+		}
+		// Stream markers require user token
+		if (normalizedResource === '/streams/markers') {
+			authMode = 'user';
+		}
+		// Chat endpoints typically require user token (moderator/broadcaster)
+		if (normalizedResource.startsWith('/chat/')) {
+			authMode = 'user';
+		}
+		// Users mutations/blocks require user token
+		if (
+			(normalizedResource === '/users' && (httpMethod === 'PUT' || httpMethod === 'PATCH' || httpMethod === 'POST' || httpMethod === 'DELETE')) ||
+			normalizedResource.startsWith('/users/blocks') ||
+			normalizedResource === '/users/extensions' && httpMethod !== 'GET'
+		) {
+			authMode = 'user';
+		}
+		// Bits leaderboard and extensions transactions are app-level
+		if (
+			normalizedResource === '/bits/leaderboard' ||
+			normalizedResource === '/extensions/transactions'
+		) {
+			authMode = 'app';
+		}
+	}
+
+	// Resolve available credentials
+	let hasUserCreds = false;
+	let hasAppCreds = false;
+	try {
+		await this.getCredentials('twitchOAuth2Api');
+		hasUserCreds = true;
+	} catch {}
+	try {
+		await this.getCredentials('twitchApi');
+		hasAppCreds = true;
+	} catch {}
+
+	// If both are acceptable for this endpoint, prefer user if both present, otherwise whichever exists.
+	const endpointAllowsBoth = (res: string, methodUpper: string): boolean => {
+		// Common read-only endpoints support both tokens
+		if (
+			res === '/users' && methodUpper === 'GET' ||
+			res === '/streams' && methodUpper === 'GET' ||
+			res === '/chat/emotes' && methodUpper === 'GET' ||
+			res === '/chat/emotes/global' && methodUpper === 'GET' ||
+			res === '/chat/emotes/set' && methodUpper === 'GET' ||
+			res === '/chat/badges' && methodUpper === 'GET' ||
+			res === '/chat/badges/global' && methodUpper === 'GET' ||
+			res === '/clips' && methodUpper === 'GET' ||
+			res === '/users/follows' && methodUpper === 'GET' ||
+			res === '/analytics/extensions' && methodUpper === 'GET' ||
+			res === '/analytics/games' && methodUpper === 'GET'
+		) return true;
+		return false;
+	};
+
+	const normRes = resource.toLowerCase();
+	const methodUpper = (method || 'GET').toUpperCase();
+
+	if (endpointAllowsBoth(normRes, methodUpper)) {
+		if (hasUserCreds && hasAppCreds) {
+			authMode = 'user';
+		} else if (hasUserCreds) {
+			authMode = 'user';
+		} else if (hasAppCreds) {
+			authMode = 'app';
+		}
 	}
 
 	if (authMode === 'user') {

@@ -24,25 +24,11 @@ export class Twitch implements INodeType {
         credentials: [
             {
                 name: 'twitchApi',
-                required: true,
-                displayOptions: {
-                    show: {
-                        authentication: [
-                            'app',
-                        ],
-                    },
-                },
+                required: false,
             },
             {
                 name: 'twitchOAuth2Api',
-                required: true,
-                displayOptions: {
-                    show: {
-                        authentication: [
-                            'user',
-                        ],
-                    },
-                },
+                required: false,
             },
         ],
         properties: [
