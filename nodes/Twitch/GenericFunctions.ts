@@ -23,10 +23,63 @@ export async function twitchApiRequest(
 ): Promise<any> {
 	// tslint:disable-line:no-any
 
-	const credentials = (await this.getCredentials('twitchApi')) as IDataObject;
+	// Determine authentication mode: 'app' (client credentials) or 'user' (OAuth2)
+	let authMode: 'app' | 'user' = 'app';
+	const endpoint = 'https://api.twitch.tv/helix';
 
-	const clientId = credentials.clientId;
-	const clientSecret = credentials.clientSecret;
+	// Allow explicit override via option.authMode
+	if (option && typeof option === 'object' && (option as IDataObject).authMode) {
+		const override = (option as IDataObject).authMode as string;
+		if (override === 'app' || override === 'user') {
+			authMode = override;
+		}
+	} else {
+		// Try to read node parameter when available
+		try {
+			const selected = (this as unknown as { getNodeParameter?: (name: string, index?: number) => unknown }).getNodeParameter?.('authentication', 0) as string | undefined;
+			if (selected === 'user' || selected === 'app') authMode = selected;
+		} catch {}
+	}
+
+	if (authMode === 'user') {
+		// Use OAuth2 user token via n8n's requestWithAuthentication
+		const oauthCreds = (await this.getCredentials('twitchOAuth2Api')) as IDataObject;
+		const clientId = oauthCreds.clientId as string;
+		const options: IHttpRequestOptions = {
+			headers: {
+				'Content-Type': 'application/json',
+				'Client-Id': clientId,
+			},
+			method: method as IHttpRequestMethods,
+			body,
+			qs: query,
+			url: `${endpoint}${resource}`,
+			json: true,
+		};
+		if (!Object.keys(body).length) {
+			delete (options as IHttpRequestOptions).body;
+		}
+		if (!Object.keys(query).length) {
+			delete (options as IHttpRequestOptions).qs;
+		}
+		try {
+			// This injects Authorization: Bearer <user token> and handles refresh
+			return await (this as unknown as { helpers: { requestWithAuthentication: (name: string, options: IHttpRequestOptions) => Promise<any> } }).helpers.requestWithAuthentication('twitchOAuth2Api', options);
+		} catch (errorObject: any) {
+			if (errorObject.error) {
+				const errorMessage = errorObject.error.message;
+				throw new Error(
+					`Twitch API (user) error response [${errorObject.error.status}]: ${errorMessage}`,
+				);
+			}
+			throw errorObject;
+		}
+	}
+
+	// Default: app access token (client credentials)
+	const credentials = (await this.getCredentials('twitchApi')) as IDataObject;
+	const clientId = credentials.clientId as string;
+	const clientSecret = credentials.clientSecret as string;
 
 	const optionsForAppToken: IHttpRequestOptions = {
 		headers: {
@@ -56,12 +109,11 @@ export async function twitchApiRequest(
 		throw errorObject;
 	}
 
-	const endpoint = 'https://api.twitch.tv/helix';
 	const options: IHttpRequestOptions = {
 		headers: {
 			'Content-Type': 'application/json',
 			'Client-Id': clientId,
-			Authorization: 'Bearer ' + appTokenResponse.access_token,
+			Authorization: 'Bearer ' + (appTokenResponse as IDataObject).access_token,
 		},
 		method: method as IHttpRequestMethods,
 		body,

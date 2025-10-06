@@ -36,7 +36,8 @@
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
-    "lintfix": "eslint nodes credentials package.json --fix"
+    "lintfix": "eslint nodes credentials package.json --fix",
+    "prepublishOnly": "npm run build"
   },
   "files": [
     "dist"
@@ -44,7 +45,8 @@
   "n8n": {
     "n8nNodesApiVersion": 1,
     "credentials": [
-      "dist/credentials/TwitchApi.credentials.js"
+      "dist/credentials/TwitchApi.credentials.js",
+      "dist/credentials/TwitchOAuth2Api.credentials.js"
     ],
     "nodes": [
       "dist/nodes/Twitch/TwitchTrigger.node.js",

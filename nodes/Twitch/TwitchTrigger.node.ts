@@ -134,11 +134,14 @@ export class TwitchTrigger implements INodeType {
 				const webhookData = this.getWorkflowStaticData('node');
 				const webhookUrl = this.getNodeWebhookUrl('default');
 				const event = this.getNodeParameter('event') as string;
-				const { data: webhooks } = await twitchApiRequest.call(
+                const { data: webhooks } = await twitchApiRequest.call(
 					this,
 					'GET',
 					'/eventsub/subscriptions',
-				);
+                    {},
+                    {},
+                    { authMode: 'app' },
+                );
 				for (const webhook of webhooks) {
 					if (
 						webhook.transport.callback === webhookUrl &&
@@ -155,12 +158,13 @@ export class TwitchTrigger implements INodeType {
 				const webhookData = this.getWorkflowStaticData('node');
 				const event = this.getNodeParameter('event');
 				const channel = this.getNodeParameter('channel_name') as string;
-				const userData = await twitchApiRequest.call(
+                const userData = await twitchApiRequest.call(
 					this,
 					'GET',
 					'/users',
 					{},
-					{ login: channel },
+                    { login: channel },
+                    { authMode: 'app' },
 				);
 				const body = {
 					type: event,
@@ -174,11 +178,13 @@ export class TwitchTrigger implements INodeType {
 						secret: 'n8ncreatedSecret',
 					},
 				};
-				const webhook = await twitchApiRequest.call(
+                const webhook = await twitchApiRequest.call(
 					this,
 					'POST',
 					'/eventsub/subscriptions',
-					body,
+                    body,
+                    {},
+                    { authMode: 'app' },
 				);
 				webhookData.webhookId = webhook.data[0].id;
 				return true;
@@ -186,12 +192,13 @@ export class TwitchTrigger implements INodeType {
 			async delete(this: IHookFunctions): Promise<boolean> {
 				const webhookData = this.getWorkflowStaticData('node');
 				try {
-					await twitchApiRequest.call(
+                    await twitchApiRequest.call(
 						this,
 						'DELETE',
 						'/eventsub/subscriptions',
 						{},
-						{ id: webhookData.webhookId },
+                        { id: webhookData.webhookId },
+                        { authMode: 'app' },
 					);
 				} catch (error) {
 					return false;

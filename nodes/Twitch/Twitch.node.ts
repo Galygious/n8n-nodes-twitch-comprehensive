@@ -25,9 +25,44 @@ export class Twitch implements INodeType {
             {
                 name: 'twitchApi',
                 required: true,
+                displayOptions: {
+                    show: {
+                        authentication: [
+                            'app',
+                        ],
+                    },
+                },
+            },
+            {
+                name: 'twitchOAuth2Api',
+                required: true,
+                displayOptions: {
+                    show: {
+                        authentication: [
+                            'user',
+                        ],
+                    },
+                },
             },
         ],
         properties: [
+            {
+                displayName: 'Authentication',
+                name: 'authentication',
+                type: 'options',
+                default: 'app',
+                description: 'Choose how to authenticate requests; some endpoints require a user token with scopes',
+                options: [
+                    {
+                        name: 'App Access Token',
+                        value: 'app',
+                    },
+                    {
+                        name: 'User Access Token (OAuth2)',
+                        value: 'user',
+                    },
+                ],
+            },
             {
                 displayName: 'Operation',
                 name: 'operation',
