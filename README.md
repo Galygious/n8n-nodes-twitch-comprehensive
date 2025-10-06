@@ -41,6 +41,30 @@ Once installed, you will be able to add Twitch triggers and actions to your n8n 
 
    <img alt="Twitch node parameters" src="/docs/node-parameters.png" width="336" height="350">
 
+# ℹ️ About this project (attribution and scope)
+
+This package started from the great foundational work by Codely (see credits and links below). It has since been significantly extended and maintained here as a community fork to cover a broader surface of the Twitch API:
+
+- Added dual authentication support with both User Access Tokens and App Access Tokens
+- Implemented 70+ actions and utilities beyond the original scope
+- Quality and structure aligned with n8n community node conventions
+
+Credits: The original node and documentation were created by Codely. This repository acknowledges and builds upon that work while evolving the feature set and architecture. This is not the original Codely codebase and has diverged substantially.
+
+# 🔐 Authentication overview
+
+Twitch uses two OAuth token types and different endpoints accept different types:
+
+- User Access Token: Required for user-context actions (e.g., schedule changes, chat/moderation, clips creation, followed streams). These require scopes.
+- App Access Token: Suitable for app-context/server-to-server actions (e.g., EventSub management, some analytics/transactions).
+
+This node lets you configure both credentials:
+
+- "Twitch API (User Access Token)" — standard OAuth2 credential with scopes
+- "Twitch API (App Access Token)" — client credentials flow
+
+The node will automatically select the appropriate token for many endpoints, prefer user tokens when both are acceptable, and force the correct token where mandated (e.g., EventSub uses App tokens). You can also explicitly choose in the node when needed.
+
 # 🚀 Installation instructions
 
 This node is in the process to be officially verified by n8n.
@@ -138,8 +162,7 @@ You will need to create a new Twitch application to get Client ID and Client Sec
    - Name: Name your app (e.g., “n8nTwitchBot”).
    - OAuth Redirect URLs: Use a valid redirect URL.
      Something like http://localhost:5678/rest/oauth2-credential/callback works.
-     We do not plan to display Twitch authentication to end users with Oauth.
-     We're only interested in getting the Client ID and Client Secret, so it's fine to specify a local URL.
+    For User Access Tokens you will authorize scopes via OAuth; for App Access Tokens you will use client credentials. A localhost redirect URL is fine for development.
    - Category: Application Integration
    - Client Type: Confidential
 5. Get your credentials:
@@ -207,3 +230,10 @@ Publishing this package we are committing ourselves to the following code qualit
 - 🎯 **One specific purpose** to meet without having to carry a bunch of unnecessary other utilities
 - 📖 **Well documented ReadMe** showing how to install and use
 - ⚖️ **License favoring Open Source** and collaboration
+
+# 🧪 Testing status and contributions
+
+This project covers a wide range of Twitch endpoints. Not all newly implemented operations have been fully tested across every permutation. You may encounter issues or edge cases.
+
+- If you find a bug or need help, please open a GitHub issue with details and reproduction steps.
+- Contributions are welcome! PRs that add missing tests, fix bugs, or improve documentation/auth scope coverage are appreciated.
