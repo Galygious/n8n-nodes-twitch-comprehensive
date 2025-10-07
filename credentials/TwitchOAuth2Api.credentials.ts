@@ -10,6 +10,12 @@ export class TwitchOAuth2Api implements ICredentialType {
     extends = ['oAuth2Api'];
     properties: INodeProperties[] = [
         {
+            displayName: 'Grant Type',
+            name: 'grantType',
+            type: 'hidden',
+            default: 'authorizationCode',
+        },
+        {
             displayName: 'Scope',
             name: 'scope',
             type: 'string',
@@ -32,7 +38,7 @@ export class TwitchOAuth2Api implements ICredentialType {
             displayName: 'Authentication',
             name: 'authentication',
             type: 'hidden',
-            default: 'header',
+            default: 'body',
         },
     ];
 }
