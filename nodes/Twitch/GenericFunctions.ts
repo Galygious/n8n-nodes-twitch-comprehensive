@@ -23,21 +23,21 @@ export async function twitchApiRequest(
 ): Promise<any> {
 	// tslint:disable-line:no-any
 
-	// Determine authentication mode: 'app' (client credentials) or 'user' (OAuth2)
-	let authMode: 'app' | 'user' = 'app';
+	// Determine authentication mode: 'app' (client credentials) or 'user' (OAuth2) or 'auto'
+	let authMode: 'app' | 'user' | 'auto' = 'auto';
 	const endpoint = 'https://api.twitch.tv/helix';
 
 	// Allow explicit override via option.authMode
 	if (option && typeof option === 'object' && (option as IDataObject).authMode) {
 		const override = (option as IDataObject).authMode as string;
-		if (override === 'app' || override === 'user') {
+		if (override === 'app' || override === 'user' || override === 'auto') {
 			authMode = override;
 		}
 	} else {
 		// Try to read node parameter when available
 		try {
 			const selected = (this as unknown as { getNodeParameter?: (name: string, index?: number) => unknown }).getNodeParameter?.('authentication', 0) as string | undefined;
-			if (selected === 'user' || selected === 'app') authMode = selected;
+			if (selected === 'user' || selected === 'app' || selected === 'auto') authMode = selected;
 		} catch {}
 
 		// Auto-select for known endpoints when not explicitly overridden
@@ -121,7 +121,7 @@ export async function twitchApiRequest(
 	const normRes = resource.toLowerCase();
 	const methodUpper = (method || 'GET').toUpperCase();
 
-	if (endpointAllowsBoth(normRes, methodUpper)) {
+	if (authMode === 'auto' && endpointAllowsBoth(normRes, methodUpper)) {
 		if (hasUserCreds && hasAppCreds) {
 			authMode = 'user';
 		} else if (hasUserCreds) {

@@ -25,10 +25,26 @@ export class Twitch implements INodeType {
             {
                 name: 'twitchApi',
                 required: false,
+                displayOptions: {
+                    show: {
+                        authentication: [
+                            'app',
+                            'auto',
+                        ],
+                    },
+                },
             },
             {
                 name: 'twitchOAuth2Api',
                 required: false,
+                displayOptions: {
+                    show: {
+                        authentication: [
+                            'user',
+                            'auto',
+                        ],
+                    },
+                },
             },
         ],
         properties: [
@@ -36,8 +52,8 @@ export class Twitch implements INodeType {
                 displayName: 'Authentication',
                 name: 'authentication',
                 type: 'options',
-                default: 'app',
-                description: 'Choose how to authenticate requests; some endpoints require a user token with scopes',
+                default: 'auto',
+                description: 'Auto prefers user if available and falls back to app when allowed; some endpoints require a specific token type',
                 options: [
                     {
                         name: 'App Access Token',
@@ -46,6 +62,10 @@ export class Twitch implements INodeType {
                     {
                         name: 'User Access Token (OAuth2)',
                         value: 'user',
+                    },
+                    {
+                        name: 'Auto (Prefer User, fallback App)',
+                        value: 'auto',
                     },
                 ],
             },
