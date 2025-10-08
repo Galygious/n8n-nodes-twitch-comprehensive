@@ -64,7 +64,7 @@ export class Twitch implements INodeType {
                         value: 'user',
                     },
                     {
-                        name: 'Auto (Prefer User, fallback App)',
+                        name: 'Auto (Prefer User, Fallback App)',
                         value: 'auto',
                     },
                 ],
@@ -76,6 +76,16 @@ export class Twitch implements INodeType {
                 noDataExpression: true,
                 default: 'getChannelStreams',
                 options: [
+                    {
+                        name: 'Ads - Get Ad Schedule',
+                        value: 'getAdSchedule',
+                        action: 'Get ad schedule',
+                    },
+                    {
+                        name: 'Ads - Snooze Next Ad',
+                        value: 'snoozeNextAd',
+                        action: 'Snooze next ad',
+                    },
                     {
                         name: 'Analytics - Get Extension Analytics',
                         value: 'getExtensionAnalytics',
@@ -200,6 +210,11 @@ export class Twitch implements INodeType {
                         name: 'Clips - Get Clips Downloads',
                         value: 'getClipsDownloads',
                         action: 'Get clips downloads',
+                    },
+                    {
+                        name: 'Commercial - Start Commercial',
+                        value: 'startCommercial',
+                        action: 'Start commercial',
                     },
                     {
                         name: 'Games - Get Game Details',
@@ -622,9 +637,8 @@ export class Twitch implements INodeType {
                 displayName: 'Extension ID',
                 name: 'extension_id',
                 type: 'string',
-                required: true,
                 default: '',
-                description: 'The extension ID to get analytics for',
+                description: "The extension's client ID to get analytics for",
                 displayOptions: {
                     show: {
                         operation: ['getExtensionAnalytics'],
@@ -635,9 +649,8 @@ export class Twitch implements INodeType {
                 displayName: 'Started At',
                 name: 'started_at',
                 type: 'dateTime',
-                required: true,
                 default: '',
-                description: 'The start date for the analytics report (ISO 8601 format)',
+                description: "The reporting window's start date (RFC3339 format)",
                 displayOptions: {
                     show: {
                         operation: ['getExtensionAnalytics', 'getGameAnalytics'],
@@ -648,9 +661,8 @@ export class Twitch implements INodeType {
                 displayName: 'Ended At',
                 name: 'ended_at',
                 type: 'dateTime',
-                required: true,
                 default: '',
-                description: 'The end date for the analytics report (ISO 8601 format)',
+                description: "The reporting window's end date (RFC3339 format)",
                 displayOptions: {
                     show: {
                         operation: ['getExtensionAnalytics', 'getGameAnalytics'],
@@ -661,7 +673,6 @@ export class Twitch implements INodeType {
                 displayName: 'Type',
                 name: 'type',
                 type: 'options',
-                required: true,
                 default: 'overview_v2',
                 options: [
                     {
@@ -672,17 +683,16 @@ export class Twitch implements INodeType {
                 description: 'The type of analytics report to get',
                 displayOptions: {
                     show: {
-                        operation: ['getExtensionAnalytics'],
+						operation: ['getExtensionAnalytics', 'getGameAnalytics'],
                     },
                 },
             },
             {
                 displayName: 'Game ID',
                 name: 'game_id',
-                type: 'string',
-                required: true,
+				type: 'string',
                 default: '',
-                description: 'The game ID to get analytics for',
+				description: 'Optional. If omitted, returns reports for all of the authenticated user’s games.',
                 displayOptions: {
                     show: {
                         operation: ['getGameAnalytics'],
@@ -1572,12 +1582,12 @@ export class Twitch implements INodeType {
                         value: 'mobile',
                     },
                     {
-                        name: 'Panel',
-                        value: 'panel',
-                    },
-                    {
                         name: 'Overlay',
                         value: 'overlay',
+                    },
+                    {
+                        name: 'Panel',
+                        value: 'panel',
                     },
                 ],
 
@@ -1632,7 +1642,6 @@ export class Twitch implements INodeType {
                 displayName: 'Reason',
                 name: 'reason_moderation',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The reason for the ban',
                 displayOptions: {
@@ -1645,7 +1654,6 @@ export class Twitch implements INodeType {
                 displayName: 'Duration',
                 name: 'duration',
                 type: 'number',
-                required: false,
                 default: 0,
                 description: 'Duration of the timeout in seconds (0 for permanent ban)',
                 displayOptions: {
@@ -1659,7 +1667,6 @@ export class Twitch implements INodeType {
                 name: 'first_moderation',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 100 },
-                required: false,
                 default: 20,
                 description: 'The maximum number of items to return per page',
                 displayOptions: {
@@ -1672,7 +1679,6 @@ export class Twitch implements INodeType {
                 displayName: 'After',
                 name: 'after_moderation',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The cursor used to get the next page of results',
                 displayOptions: {
@@ -1724,7 +1730,6 @@ export class Twitch implements INodeType {
                 displayName: 'Video ID',
                 name: 'video_id',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'ID of the video(s) to get (comma-separated for multiple)',
                 displayOptions: {
@@ -1737,7 +1742,6 @@ export class Twitch implements INodeType {
                 displayName: 'User ID',
                 name: 'user_id_videos',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'ID of the user who owns the videos',
                 displayOptions: {
@@ -1750,7 +1754,6 @@ export class Twitch implements INodeType {
                 displayName: 'Game ID',
                 name: 'game_id_videos',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'ID of the game/category',
                 displayOptions: {
@@ -1763,7 +1766,6 @@ export class Twitch implements INodeType {
                 displayName: 'Language',
                 name: 'language_videos',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'Language of the video (ISO 639-1 two-letter code)',
                 displayOptions: {
@@ -1782,7 +1784,6 @@ export class Twitch implements INodeType {
                     { name: 'Month', value: 'month' },
                     { name: 'Week', value: 'week' },
                 ],
-                required: false,
                 default: 'all',
                 description: 'Period during which the video was created',
                 displayOptions: {
@@ -1800,7 +1801,6 @@ export class Twitch implements INodeType {
                     { name: 'Trending', value: 'trending' },
                     { name: 'Views', value: 'views' },
                 ],
-                required: false,
                 default: 'time',
                 description: 'Sort order of the videos',
                 displayOptions: {
@@ -1819,7 +1819,6 @@ export class Twitch implements INodeType {
                     { name: 'Highlight', value: 'highlight' },
                     { name: 'Upload', value: 'upload' },
                 ],
-                required: false,
                 default: 'all',
                 description: 'Type of video',
                 displayOptions: {
@@ -1833,7 +1832,6 @@ export class Twitch implements INodeType {
                 name: 'first_videos',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 100 },
-                required: false,
                 default: 20,
                 description: 'The maximum number of videos to return per page',
                 displayOptions: {
@@ -1846,7 +1844,6 @@ export class Twitch implements INodeType {
                 displayName: 'After',
                 name: 'after_videos',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The cursor used to get the next page of results',
                 displayOptions: {
@@ -1859,7 +1856,6 @@ export class Twitch implements INodeType {
                 displayName: 'Before',
                 name: 'before_videos',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The cursor used to get the previous page of results',
                 displayOptions: {
@@ -1872,7 +1868,6 @@ export class Twitch implements INodeType {
                 displayName: 'Title',
                 name: 'title_videos',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The new title for the video',
                 displayOptions: {
@@ -1885,7 +1880,6 @@ export class Twitch implements INodeType {
                 displayName: 'Description',
                 name: 'description_videos',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The new description for the video',
                 displayOptions: {
@@ -1898,7 +1892,6 @@ export class Twitch implements INodeType {
                 displayName: 'Language',
                 name: 'language_update_videos',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The new language for the video (ISO 639-1 two-letter code)',
                 displayOptions: {
@@ -1924,7 +1917,6 @@ export class Twitch implements INodeType {
                 displayName: 'User ID',
                 name: 'user_id_subscriptions',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The ID of the user to check subscription for (comma-separated for multiple)',
                 displayOptions: {
@@ -1938,7 +1930,6 @@ export class Twitch implements INodeType {
                 name: 'first_subscriptions',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 100 },
-                required: false,
                 default: 20,
                 description: 'The maximum number of subscriptions to return per page',
                 displayOptions: {
@@ -1951,7 +1942,6 @@ export class Twitch implements INodeType {
                 displayName: 'After',
                 name: 'after_subscriptions',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The cursor used to get the next page of results',
                 displayOptions: {
@@ -1974,10 +1964,62 @@ export class Twitch implements INodeType {
                 },
             },
             {
+                displayName: 'Broadcaster ID',
+                name: 'broadcaster_id_commercial',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the partner or affiliate broadcaster that wants to run the commercial',
+                displayOptions: {
+                    show: {
+                        operation: ['startCommercial'],
+                    },
+                },
+            },
+            {
+                displayName: 'Broadcaster ID',
+                name: 'broadcaster_id_ads',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the broadcaster whose ad schedule you want to get',
+                displayOptions: {
+                    show: {
+                        operation: ['getAdSchedule'],
+                    },
+                },
+            },
+            {
+                displayName: 'Broadcaster ID',
+                name: 'broadcaster_id_snooze',
+                type: 'string',
+                required: true,
+                default: '',
+                description: 'The ID of the broadcaster whose next ad you want to snooze. Must match the user_id in the auth token.',
+                displayOptions: {
+                    show: {
+                        operation: ['snoozeNextAd'],
+                    },
+                },
+            },
+            {
+                displayName: 'Commercial Length',
+                name: 'commercial_length',
+                type: 'number',
+                required: true,
+                typeOptions: { minValue: 30, maxValue: 180 },
+                default: 60,
+                description: 'The length of the commercial to run, in seconds (30-180)',
+                displayOptions: {
+                    show: {
+                        operation: ['startCommercial'],
+                    },
+                },
+            },
+            {
                 displayName: 'Reward ID',
                 name: 'reward_id',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The ID of the custom reward',
                 displayOptions: {
@@ -1990,7 +2032,6 @@ export class Twitch implements INodeType {
                 displayName: 'Redemption ID',
                 name: 'redemption_id',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The ID of the redemption',
                 displayOptions: {
@@ -2034,7 +2075,6 @@ export class Twitch implements INodeType {
                 name: 'first_channel_points',
                 type: 'number',
                 typeOptions: { minValue: 1, maxValue: 50 },
-                required: false,
                 default: 20,
                 description: 'The maximum number of items to return per page',
                 displayOptions: {
@@ -2047,7 +2087,6 @@ export class Twitch implements INodeType {
                 displayName: 'After',
                 name: 'after_channel_points',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The cursor used to get the next page of results',
                 displayOptions: {
@@ -2073,7 +2112,6 @@ export class Twitch implements INodeType {
                 displayName: 'Team Name',
                 name: 'team_name',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The name of the team to get',
                 displayOptions: {
@@ -2086,7 +2124,6 @@ export class Twitch implements INodeType {
                 displayName: 'Team ID',
                 name: 'team_id',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The ID of the team to get',
                 displayOptions: {
@@ -2170,7 +2207,6 @@ export class Twitch implements INodeType {
                     { name: 'TERMINATED', value: 'TERMINATED' },
                     { name: 'ARCHIVED', value: 'ARCHIVED' },
                 ],
-                required: false,
                 default: 'ACTIVE',
                 description: 'The status of polls to get',
                 displayOptions: {
@@ -2254,7 +2290,6 @@ export class Twitch implements INodeType {
                     { name: 'CANCELED', value: 'CANCELED' },
                     { name: 'LOCKED', value: 'LOCKED' },
                 ],
-                required: false,
                 default: 'ACTIVE',
                 description: 'The status of predictions to get',
                 displayOptions: {
@@ -2267,7 +2302,6 @@ export class Twitch implements INodeType {
                 displayName: 'Winning Outcome ID',
                 name: 'winning_outcome_id',
                 type: 'string',
-                required: false,
                 default: '',
                 description: 'The ID of the winning outcome (required if status is RESOLVED)',
                 displayOptions: {
@@ -2475,6 +2509,38 @@ export class Twitch implements INodeType {
                     this,
                     'GET',
                     '/schedule',
+                    {},
+                    { broadcaster_id: broadcasterId },
+                );
+
+                if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'getAdSchedule') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_ads', i) as string;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'GET',
+                    '/channels/ads',
+                    {},
+                    { broadcaster_id: broadcasterId },
+                );
+
+                if (response.data) {
+                    returnData.push(response.data);
+                }
+            }
+
+            if (operation === 'snoozeNextAd') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_snooze', i) as string;
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'POST',
+                    '/channels/ads/schedule/snooze',
                     {},
                     { broadcaster_id: broadcasterId },
                 );
@@ -2692,14 +2758,19 @@ export class Twitch implements INodeType {
                 const first = this.getNodeParameter('first_analytics', i) as number;
                 const after = this.getNodeParameter('after_analytics', i) as string;
 
-                const query: IDataObject = {
-                    extension_id: extensionId,
-                    started_at: startedAt,
-                    ended_at: endedAt,
-                    type: type,
-                };
+                if ((startedAt && !endedAt) || (!startedAt && endedAt)) {
+                    throw new NodeOperationError(this.getNode(), 'Both started_at and ended_at must be specified together.');
+                }
+
+                const query: IDataObject = {};
+                if (extensionId) query.extension_id = extensionId;
+                if (startedAt && endedAt) {
+                    query.started_at = startedAt;
+                    query.ended_at = endedAt;
+                }
+                if (type) query.type = type;
                 if (first) query.first = first;
-                if (after) query.after = after;
+                if (after && !extensionId) query.after = after;
 
                 const response = await twitchApiRequest.call(
                     this,
@@ -2707,6 +2778,7 @@ export class Twitch implements INodeType {
                     '/analytics/extensions',
                     {},
                     query,
+                    { authMode: 'user' },
                 );
 
                 if (Array.isArray(response.data)) {
@@ -2715,27 +2787,35 @@ export class Twitch implements INodeType {
             }
 
             if (operation === 'getGameAnalytics') {
-                const gameId = this.getNodeParameter('game_id', i) as string;
-                const startedAt = this.getNodeParameter('started_at', i) as string;
-                const endedAt = this.getNodeParameter('ended_at', i) as string;
-                const first = this.getNodeParameter('first_analytics', i) as number;
-                const after = this.getNodeParameter('after_analytics', i) as string;
+				const gameId = this.getNodeParameter('game_id', i) as string;
+				const startedAt = this.getNodeParameter('started_at', i) as string;
+				const endedAt = this.getNodeParameter('ended_at', i) as string;
+				const type = this.getNodeParameter('type', i) as string;
+				const first = this.getNodeParameter('first_analytics', i) as number;
+				const after = this.getNodeParameter('after_analytics', i) as string;
 
-                const query: IDataObject = {
-                    game_id: gameId,
-                    started_at: startedAt,
-                    ended_at: endedAt,
-                };
-                if (first) query.first = first;
-                if (after) query.after = after;
+				if ((startedAt && !endedAt) || (!startedAt && endedAt)) {
+					throw new NodeOperationError(this.getNode(), 'Both started_at and ended_at must be specified together.');
+				}
 
-                const response = await twitchApiRequest.call(
-                    this,
-                    'GET',
-                    '/analytics/games',
-                    {},
-                    query,
-                );
+				const query: IDataObject = {};
+				if (gameId) query.game_id = gameId;
+				if (startedAt && endedAt) {
+					query.started_at = startedAt;
+					query.ended_at = endedAt;
+				}
+				if (type) query.type = type;
+				if (first) query.first = first;
+				if (after && !gameId) query.after = after; // after ignored if game_id is set
+
+				const response = await twitchApiRequest.call(
+					this,
+					'GET',
+					'/analytics/games',
+					{},
+					query,
+					{ authMode: 'user' },
+				);
 
                 if (Array.isArray(response.data)) {
                     returnData.push(...response.data);
@@ -3837,6 +3917,31 @@ export class Twitch implements INodeType {
                     '/channel_points/custom_rewards/redemptions',
                     body,
                     { broadcaster_id: broadcasterId, reward_id: rewardId, id: redemptionId },
+                );
+
+                if (Array.isArray(response.data)) {
+                    returnData.push(...response.data);
+                }
+            }
+
+            if (operation === 'startCommercial') {
+                const broadcasterId = this.getNodeParameter('broadcaster_id_commercial', i) as string;
+                const length = this.getNodeParameter('commercial_length', i) as number;
+
+                if (!broadcasterId) {
+                    throw new NodeOperationError(this.getNode(), 'Broadcaster ID is required for starting a commercial');
+                }
+
+                const body: IDataObject = {
+                    broadcaster_id: broadcasterId,
+                    length: length,
+                };
+
+                const response = await twitchApiRequest.call(
+                    this,
+                    'POST',
+                    '/channels/commercial',
+                    body,
                 );
 
                 if (Array.isArray(response.data)) {

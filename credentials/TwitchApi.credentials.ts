@@ -6,7 +6,7 @@ import {
 
 export class TwitchApi implements ICredentialType {
 	name = 'twitchApi';
-    displayName = 'Twitch API (App Access Token)';
+    displayName = 'Twitch API (App Access Token) API';
 	documentationUrl = 'https://github.com/CodelyTV/n8n-nodes-twitch?tab=readme-ov-file#-how-to-get-twitch-credentials';
 	properties: INodeProperties[] = [
 		{

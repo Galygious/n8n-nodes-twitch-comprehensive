@@ -65,6 +65,15 @@ This node lets you configure both credentials:
 
 The node will automatically select the appropriate token for many endpoints, prefer user tokens when both are acceptable, and force the correct token where mandated (e.g., EventSub uses App tokens). You can also explicitly choose in the node when needed.
 
+## Required scopes by operation
+
+- Get Extension Analytics: `analytics:read:extensions`
+- Get Game Analytics: `analytics:read:games`
+
+### Authentication notes for analytics
+
+- Analytics endpoints require a user access token. Ensure you configure `twitchOAuth2Api` and grant the appropriate scopes in Twitch Developer Console. The node auto-selects user auth for `/analytics/extensions` and `/analytics/games`.
+
 # 🚀 Installation instructions
 
 This node is in the process to be officially verified by n8n.

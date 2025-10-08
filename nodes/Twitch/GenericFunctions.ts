@@ -55,6 +55,10 @@ export async function twitchApiRequest(
 		if (normalizedResource === '/clips' && httpMethod === 'POST') {
 			authMode = 'user';
 		}
+		// Commercial requires user token
+		if (normalizedResource === '/channels/commercial' && httpMethod === 'POST') {
+			authMode = 'user';
+		}
 		// Schedule mutations require user token
 		if (
 			(normalizedResource === '/schedule/settings' && httpMethod === 'PATCH') ||
@@ -75,6 +79,13 @@ export async function twitchApiRequest(
 			(normalizedResource === '/users' && (httpMethod === 'PUT' || httpMethod === 'PATCH' || httpMethod === 'POST' || httpMethod === 'DELETE')) ||
 			normalizedResource.startsWith('/users/blocks') ||
 			normalizedResource === '/users/extensions' && httpMethod !== 'GET'
+		) {
+			authMode = 'user';
+		}
+		// Analytics require user token with appropriate scopes
+		if (
+			normalizedResource === '/analytics/extensions' ||
+			normalizedResource === '/analytics/games'
 		) {
 			authMode = 'user';
 		}
@@ -110,10 +121,9 @@ export async function twitchApiRequest(
 			res === '/chat/emotes/set' && methodUpper === 'GET' ||
 			res === '/chat/badges' && methodUpper === 'GET' ||
 			res === '/chat/badges/global' && methodUpper === 'GET' ||
+			res === '/chat/settings' && methodUpper === 'GET' ||
 			res === '/clips' && methodUpper === 'GET' ||
-			res === '/users/follows' && methodUpper === 'GET' ||
-			res === '/analytics/extensions' && methodUpper === 'GET' ||
-			res === '/analytics/games' && methodUpper === 'GET'
+			res === '/users/follows' && methodUpper === 'GET'
 		) return true;
 		return false;
 	};

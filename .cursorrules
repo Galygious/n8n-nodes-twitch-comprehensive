@@ -1,0 +1,34 @@
+# Project: n8n-nodes-twitch-comprehensive
+
+## Overview
+- Community node for Twitch API with 70+ operations and triggers.
+- Dual authentication: App Access Token (`twitchApi`) and User Access Token (`twitchOAuth2Api`).
+- TypeScript strict mode, follows n8n community node conventions.
+
+## Build & Dev
+- Build: `npm run build` (tsc + gulp icons)
+- Watch: `npm run dev`
+- Lint: `npm run lint` / `npm run lintfix`
+- Node >= 20, npm >= 10
+
+## Auth Selection Rules
+- EventSub: App token
+- Streams Followed, Clips (POST), Commercials (POST), Schedule mutations, Stream markers, Chat, Users mutations: User token
+- Analytics (extensions, games): User token with scopes
+- Bits leaderboard, Extensions transactions: App token
+
+## Scopes per Operation (partial)
+- Get Extension Analytics: `analytics:read:extensions`
+- Get Game Analytics: `analytics:read:games`
+
+## Node Parameters
+- Date parameters use RFC3339; for analytics, `started_at` and `ended_at` must be provided together.
+- `after` is ignored for extension analytics when `extension_id` is set.
+- `after` is ignored for game analytics when `game_id` is set.
+
+## Additional Notes
+- The node auto-selects user authentication for `/analytics/extensions` and `/analytics/games` and will throw if only one of `started_at`/`ended_at` is provided.
+
+## Publishing
+- Versioning: Semantic Versioning, no breaking changes in minor/patch.
+- Prepublish builds via `prepublishOnly`.
