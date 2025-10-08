@@ -154,7 +154,11 @@ export async function twitchApiRequest(
 		}
 		try {
 			// This injects Authorization: Bearer <user token> and handles refresh
-			return await (this as unknown as { helpers: { requestWithAuthentication: (name: string, options: IHttpRequestOptions) => Promise<any> } }).helpers.requestWithAuthentication('twitchOAuth2Api', options);
+			return await this.helpers.requestWithAuthentication.call(
+				this as unknown as IExecuteFunctions | IWebhookFunctions | IHookFunctions | ILoadOptionsFunctions,
+				'twitchOAuth2Api',
+				options,
+			);
 		} catch (errorObject: any) {
 			if (errorObject.error) {
 				const errorMessage = errorObject.error.message;
